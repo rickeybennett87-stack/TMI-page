@@ -5,1672 +5,982 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Thessalonian Mandate Institute</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
-/* ── RESET & BASE ─────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --navy:   #1B3A6B;
-  --gold:   #C9A84C;
-  --gold-lt:#E8C96A;
-  --dark:   #0D1F3C;
-  --cream:  #F8F5EF;
-  --warm:   #F2EDE3;
-  --text:   #1A1A1A;
-  --gray:   #555555;
-  --lgray:  #CCCCCC;
-  --white:  #FFFFFF;
-  --green:  #2D6A4F;
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body:    'Libre Baskerville', Georgia, serif;
-  --font-ui:      'Source Sans 3', system-ui, sans-serif;
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-  font-family: var(--font-body);
-  font-size: 17px;
-  line-height: 1.7;
-  color: var(--text);
-  background: var(--cream);
-  min-height: 100vh;
-}
-
-/* ── PAGES ────────────────────────────────────────────────────────── */
-.page { display: none; min-height: 100vh; }
-.page.active { display: block; }
-
-/* ── GATEWAY PAGE ─────────────────────────────────────────────────── */
-#gateway {
-  background: var(--dark);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-#gateway::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(27,58,107,0.4) 0%, transparent 60%);
-  pointer-events: none;
-}
-
-.gateway-inner {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  max-width: 860px;
-  padding: 60px 40px;
-  animation: fadeUp 1.2s ease both;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.gateway-rule {
-  width: 80px;
-  height: 2px;
-  background: var(--gold);
-  margin: 0 auto 32px;
-}
-
-.gateway-org {
-  font-family: var(--font-ui);
-  font-weight: 300;
-  font-size: 12px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 24px;
-}
-
-.gateway-title {
-  font-family: var(--font-display);
-  font-size: clamp(38px, 7vw, 72px);
-  font-weight: 600;
-  color: var(--white);
-  line-height: 1.1;
-  margin-bottom: 20px;
-}
-
-.gateway-title em {
-  font-style: italic;
-  color: var(--gold);
-}
-
-.gateway-subtitle {
-  font-family: var(--font-display);
-  font-size: clamp(16px, 2.5vw, 22px);
-  font-style: italic;
-  color: rgba(255,255,255,0.65);
-  margin-bottom: 56px;
-  line-height: 1.5;
-}
-
-.gateway-question {
-  font-family: var(--font-ui);
-  font-weight: 300;
-  font-size: 13px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.4);
-  margin-bottom: 32px;
-}
-
-.gateway-doors {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  max-width: 680px;
-  margin: 0 auto;
-}
-
-.door {
-  padding: 36px 28px;
-  border: 1px solid rgba(201,168,76,0.25);
-  cursor: pointer;
-  transition: all 0.35s ease;
-  position: relative;
-  overflow: hidden;
-  background: rgba(255,255,255,0.03);
-  text-align: left;
-}
-
-.door::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(201,168,76,0.06);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.35s ease;
-}
-
-.door:hover::before { transform: scaleX(1); }
-.door:hover { border-color: var(--gold); }
-
-.door-label {
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 12px;
-  display: block;
-}
-
-.door-title {
-  font-family: var(--font-display);
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--white);
-  line-height: 1.2;
-  margin-bottom: 12px;
-}
-
-.door-desc {
-  font-family: var(--font-ui);
-  font-size: 14px;
-  font-weight: 300;
-  color: rgba(255,255,255,0.55);
-  line-height: 1.6;
-}
-
-.door-arrow {
-  display: inline-block;
-  margin-top: 20px;
-  font-family: var(--font-ui);
-  font-size: 12px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gold);
-  opacity: 0;
-  transform: translateX(-8px);
-  transition: all 0.3s ease;
-}
-
-.door:hover .door-arrow {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.gateway-verse {
-  margin-top: 56px;
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-style: italic;
-  color: rgba(255,255,255,0.3);
-  letter-spacing: 0.5px;
-}
-
-/* ── SHARED NAV ───────────────────────────────────────────────────── */
-.site-nav {
-  background: var(--navy);
-  padding: 0 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 64px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 20px rgba(0,0,0,0.2);
-}
-
-.nav-brand {
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--white);
-  cursor: pointer;
-  letter-spacing: 0.3px;
-}
-
-.nav-brand span { color: var(--gold); }
-
-.nav-links {
-  display: flex;
-  gap: 32px;
-  list-style: none;
-}
-
-.nav-links a {
-  font-family: var(--font-ui);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.7);
-  text-decoration: none;
-  transition: color 0.2s;
-  cursor: pointer;
-}
-
-.nav-links a:hover { color: var(--gold); }
-
-.nav-switch {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--gold);
-  border: 1px solid var(--gold);
-  padding: 6px 16px;
-  cursor: pointer;
-  transition: all 0.25s;
-  background: transparent;
-}
-
-.nav-switch:hover {
-  background: var(--gold);
-  color: var(--navy);
-}
-
-/* ── WORKER SIDE ──────────────────────────────────────────────────── */
-#worker { background: var(--cream); }
-
-/* Hero */
-.worker-hero {
-  background: var(--navy);
-  padding: 100px 40px;
-  position: relative;
-  overflow: hidden;
-}
-
-.worker-hero::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--gold), transparent);
-}
-
-.worker-hero-inner {
-  max-width: 860px;
-  margin: 0 auto;
-  animation: fadeUp 0.8s ease both;
-}
-
-.hero-eyebrow {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 20px;
-}
-
-.worker-hero h1 {
-  font-family: var(--font-display);
-  font-size: clamp(36px, 6vw, 64px);
-  font-weight: 600;
-  color: var(--white);
-  line-height: 1.15;
-  margin-bottom: 24px;
-}
-
-.worker-hero h1 em {
-  font-style: italic;
-  color: var(--gold);
-}
-
-.worker-hero-body {
-  font-family: var(--font-body);
-  font-size: 18px;
-  color: rgba(255,255,255,0.8);
-  max-width: 620px;
-  line-height: 1.7;
-  margin-bottom: 40px;
-}
-
-.btn-primary {
-  display: inline-block;
-  font-family: var(--font-ui);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  background: var(--gold);
-  color: var(--navy);
-  padding: 16px 36px;
-  cursor: pointer;
-  border: none;
-  transition: all 0.25s;
-  text-decoration: none;
-}
-
-.btn-primary:hover {
-  background: var(--gold-lt);
-  transform: translateY(-2px);
-}
-
-.btn-outline {
-  display: inline-block;
-  font-family: var(--font-ui);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  background: transparent;
-  color: var(--white);
-  padding: 15px 36px;
-  cursor: pointer;
-  border: 2px solid rgba(255,255,255,0.85);
-  transition: all 0.25s;
-  margin-left: 16px;
-  text-decoration: none;
-}
-
-.btn-outline:hover {
-  background: rgba(255,255,255,0.12);
-  border-color: var(--white);
-}
-
-/* Reassurance section */
-.reassurance {
-  background: var(--white);
-  padding: 80px 40px;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-}
-
-.reassurance-inner {
-  max-width: 860px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: center;
-}
-
-.reassurance-text h2 {
-  font-family: var(--font-display);
-  font-size: clamp(28px, 4vw, 42px);
-  font-weight: 600;
-  color: var(--navy);
-  line-height: 1.2;
-  margin-bottom: 20px;
-}
-
-.reassurance-text h2 em {
-  font-style: italic;
-  color: var(--gold);
-}
-
-.reassurance-text p {
-  color: var(--gray);
-  margin-bottom: 16px;
-  line-height: 1.75;
-}
-
-.reassurance-pillars {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.pillar {
-  padding: 24px;
-  border-left: 3px solid var(--gold);
-  background: var(--cream);
-}
-
-.pillar-title {
-  font-family: var(--font-ui);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--navy);
-  margin-bottom: 6px;
-}
-
-.pillar-text {
-  font-family: var(--font-ui);
-  font-size: 14px;
-  color: var(--gray);
-  line-height: 1.6;
-}
-
-/* How it works */
-.how-it-works {
-  padding: 80px 40px;
-  background: var(--cream);
-}
-
-.section-inner { max-width: 860px; margin: 0 auto; }
-
-.section-label {
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 12px;
-}
-
-.section-title {
-  font-family: var(--font-display);
-  font-size: clamp(28px, 4vw, 44px);
-  font-weight: 600;
-  color: var(--navy);
-  line-height: 1.2;
-  margin-bottom: 48px;
-}
-
-.steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
-}
-
-.step {
-  position: relative;
-}
-
-.step-num {
-  font-family: var(--font-display);
-  font-size: 64px;
-  font-weight: 700;
-  color: rgba(201,168,76,0.15);
-  line-height: 1;
-  margin-bottom: -16px;
-}
-
-.step-title {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--navy);
-  margin-bottom: 10px;
-}
-
-.step-text {
-  font-family: var(--font-ui);
-  font-size: 15px;
-  color: var(--gray);
-  line-height: 1.65;
-}
-
-/* Pathways */
-.pathways-section {
-  background: var(--navy);
-  padding: 80px 40px;
-}
-
-.pathways-section .section-title { color: var(--white); }
-
-.pathway-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-}
-
-.pathway-card {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(201,168,76,0.2);
-  padding: 24px;
-  transition: all 0.3s ease;
-}
-
-.pathway-card:hover {
-  background: rgba(255,255,255,0.08);
-  border-color: var(--gold);
-  transform: translateY(-3px);
-}
-
-.pathway-icon {
-  font-size: 28px;
-  margin-bottom: 12px;
-}
-
-.pathway-name {
-  font-family: var(--font-display);
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--white);
-  margin-bottom: 6px;
-}
-
-.pathway-duration {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 8px;
-}
-
-.pathway-desc {
-  font-family: var(--font-ui);
-  font-size: 13px;
-  color: rgba(255,255,255,0.55);
-  line-height: 1.55;
-}
-
-.pathway-free {
-  margin-top: 12px;
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-
-/* Placement */
-.placement-section {
-  background: var(--white);
-  padding: 80px 40px;
-}
-
-.placement-inner {
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-.placement-promise {
-  background: var(--navy);
-  padding: 48px;
-  margin-bottom: 48px;
-  position: relative;
-  overflow: hidden;
-}
-
-.placement-promise::before {
-  content: '"';
-  position: absolute;
-  top: -20px;
-  left: 30px;
-  font-family: var(--font-display);
-  font-size: 200px;
-  color: rgba(201,168,76,0.08);
-  line-height: 1;
-  pointer-events: none;
-}
-
-.placement-promise-text {
-  font-family: var(--font-display);
-  font-size: clamp(20px, 3vw, 28px);
-  font-style: italic;
-  color: var(--white);
-  line-height: 1.4;
-  position: relative;
-  z-index: 1;
-}
-
-.placement-promise-attr {
-  margin-top: 16px;
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gold);
-  position: relative;
-  z-index: 1;
-}
-
-.placement-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-
-.placement-item {
-  padding: 24px;
-  border: 1px solid var(--lgray);
-  border-top: 3px solid var(--gold);
-}
-
-.placement-item-title {
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--navy);
-  margin-bottom: 8px;
-}
-
-.placement-item-text {
-  font-family: var(--font-ui);
-  font-size: 14px;
-  color: var(--gray);
-  line-height: 1.65;
-}
-
-/* Apply CTA */
-.apply-section {
-  background: linear-gradient(135deg, var(--gold) 0%, #A8892E 100%);
-  padding: 80px 40px;
-  text-align: center;
-}
-
-.apply-section h2 {
-  font-family: var(--font-display);
-  font-size: clamp(28px, 4vw, 44px);
-  font-weight: 600;
-  color: var(--navy);
-  margin-bottom: 16px;
-}
-
-.apply-section p {
-  font-family: var(--font-body);
-  font-size: 18px;
-  color: rgba(13,31,60,0.8);
-  max-width: 560px;
-  margin: 0 auto 36px;
-}
-
-.btn-dark {
-  display: inline-block;
-  font-family: var(--font-ui);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  background: var(--navy);
-  color: var(--white);
-  padding: 18px 44px;
-  cursor: pointer;
-  border: none;
-  transition: all 0.25s;
-  text-decoration: none;
-}
-
-.btn-dark:hover { background: var(--dark); transform: translateY(-2px); }
-
-/* ── DONOR SIDE ───────────────────────────────────────────────────── */
-#donor { background: var(--cream); }
-
-.donor-hero {
-  background: var(--cream);
-  padding: 100px 40px 80px;
-  border-bottom: 1px solid rgba(0,0,0,0.08);
-}
-
-.donor-hero-inner {
-  max-width: 860px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 380px;
-  gap: 80px;
-  align-items: center;
-  animation: fadeUp 0.8s ease both;
-}
-
-.donor-hero h1 {
-  font-family: var(--font-display);
-  font-size: clamp(32px, 5vw, 54px);
-  font-weight: 600;
-  color: var(--navy);
-  line-height: 1.15;
-  margin-bottom: 24px;
-}
-
-.donor-hero h1 em {
-  font-style: italic;
-  color: var(--gold);
-}
-
-.donor-hero-body {
-  font-size: 17px;
-  color: var(--gray);
-  line-height: 1.75;
-  margin-bottom: 32px;
-}
-
-.donor-stat-box {
-  background: var(--navy);
-  padding: 40px;
-  text-align: center;
-}
-
-.stat-number {
-  font-family: var(--font-display);
-  font-size: 56px;
-  font-weight: 700;
-  color: var(--gold);
-  line-height: 1;
-  margin-bottom: 8px;
-}
-
-.stat-label {
-  font-family: var(--font-ui);
-  font-size: 13px;
-  font-weight: 400;
-  color: rgba(255,255,255,0.7);
-  line-height: 1.5;
-}
-
-/* The case section */
-.case-section {
-  background: var(--white);
-  padding: 80px 40px;
-}
-
-.case-inner {
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-.scripture-block {
-  border-left: 4px solid var(--gold);
-  padding: 28px 36px;
-  background: var(--cream);
-  margin: 40px 0;
-}
-
-.scripture-text {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-style: italic;
-  color: var(--navy);
-  line-height: 1.5;
-  margin-bottom: 10px;
-}
-
-.scripture-ref {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-
-.case-body {
-  font-size: 17px;
-  color: var(--gray);
-  line-height: 1.75;
-  margin-bottom: 20px;
-}
-
-/* Model section */
-.model-section {
-  background: var(--cream);
-  padding: 80px 40px;
-}
-
-.model-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 48px;
-}
-
-.model-card {
-  background: var(--white);
-  padding: 32px;
-  border-top: 3px solid var(--gold);
-}
-
-.model-card-num {
-  font-family: var(--font-display);
-  font-size: 40px;
-  font-weight: 700;
-  color: rgba(201,168,76,0.3);
-  line-height: 1;
-  margin-bottom: -8px;
-}
-
-.model-card-title {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--navy);
-  margin-bottom: 10px;
-}
-
-.model-card-text {
-  font-family: var(--font-ui);
-  font-size: 14px;
-  color: var(--gray);
-  line-height: 1.65;
-}
-
-/* Founder section */
-.founder-section {
-  background: var(--navy);
-  padding: 80px 40px;
-}
-
-.founder-inner {
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-.founder-inner .section-title { color: var(--white); margin-bottom: 32px; }
-
-.founder-text {
-  font-family: var(--font-body);
-  font-size: 17px;
-  color: rgba(255,255,255,0.75);
-  line-height: 1.8;
-  margin-bottom: 20px;
-  max-width: 680px;
-}
-
-.founder-credential {
-  margin-top: 40px;
-  padding: 28px;
-  border: 1px solid rgba(201,168,76,0.3);
-  display: inline-block;
-}
-
-.founder-name {
-  font-family: var(--font-display);
-  font-size: 24px;
-  font-weight: 600;
-  color: var(--white);
-  margin-bottom: 4px;
-}
-
-.founder-title-text {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-
-/* Give section */
-.give-section {
-  background: var(--white);
-  padding: 80px 40px;
-}
-
-.give-inner {
-  max-width: 860px;
-  margin: 0 auto;
-}
-
-.give-options {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 48px;
-}
-
-.give-card {
-  padding: 36px 28px;
-  background: var(--cream);
-  border: 1px solid transparent;
-  transition: all 0.3s;
-  cursor: pointer;
-  text-align: center;
-}
-
-.give-card:hover {
-  border-color: var(--gold);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
-}
-
-.give-amount {
-  font-family: var(--font-display);
-  font-size: 44px;
-  font-weight: 700;
-  color: var(--navy);
-  line-height: 1;
-  margin-bottom: 8px;
-}
-
-.give-period {
-  font-family: var(--font-ui);
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 16px;
-  display: block;
-}
-
-.give-impact {
-  font-family: var(--font-ui);
-  font-size: 14px;
-  color: var(--gray);
-  line-height: 1.6;
-}
-
-.give-contact {
-  margin-top: 48px;
-  padding: 36px;
-  background: var(--navy);
-  text-align: center;
-}
-
-.give-contact p {
-  font-family: var(--font-body);
-  font-size: 17px;
-  color: rgba(255,255,255,0.8);
-  margin-bottom: 20px;
-}
-
-.give-contact a {
-  font-family: var(--font-ui);
-  font-size: 14px;
-  color: var(--gold);
-  text-decoration: none;
-}
-
-/* ── FOOTER ───────────────────────────────────────────────────────── */
-.site-footer {
-  background: var(--dark);
-  padding: 48px 40px;
-  text-align: center;
-}
-
-.footer-org {
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--white);
-  margin-bottom: 8px;
-}
-
-.footer-sub {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.35);
-  margin-bottom: 20px;
-}
-
-.footer-rule {
-  width: 60px;
-  height: 1px;
-  background: var(--gold);
-  margin: 20px auto;
-  opacity: 0.4;
-}
-
-.footer-motto {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 16px;
-  color: rgba(255,255,255,0.4);
-  margin-bottom: 20px;
-}
-
-.footer-legal {
-  font-family: var(--font-ui);
-  font-size: 11px;
-  color: rgba(255,255,255,0.2);
-  line-height: 1.8;
-}
-
-/* ── RESPONSIVE ───────────────────────────────────────────────────── */
-/* Donor outline button - dark background context */
-.btn-outline-dark {
-  display: inline-block;
-  font-family: var(--font-ui);
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  background: transparent;
-  color: var(--navy);
-  padding: 15px 36px;
-  cursor: pointer;
-  border: 2px solid var(--navy);
-  transition: all 0.25s;
-  margin-left: 16px;
-  text-decoration: none;
-}
-
-.btn-outline-dark:hover {
-  background: var(--navy);
-  color: var(--white);
-}
-
-/* Button groups stack on mobile */
-.btn-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
-}
-
-.btn-group .btn-outline,
-.btn-group .btn-outline-dark {
-  margin-left: 0;
-}
-
-@media (max-width: 768px) {
-  .btn-outline, .btn-outline-dark { margin-left: 0; }
-  .gateway-doors { grid-template-columns: 1fr; }
-  .reassurance-inner { grid-template-columns: 1fr; gap: 40px; }
-  .steps { grid-template-columns: 1fr; }
-  .pathway-grid { grid-template-columns: 1fr 1fr; }
-  .placement-grid { grid-template-columns: 1fr; }
-  .donor-hero-inner { grid-template-columns: 1fr; }
-  .model-grid { grid-template-columns: 1fr; }
-  .give-options { grid-template-columns: 1fr; }
-  .nav-links { display: none; }
-  .site-nav { padding: 0 20px; }
-  .worker-hero, .donor-hero, .how-it-works,
-  .pathways-section, .placement-section, .apply-section,
-  .case-section, .model-section, .founder-section, .give-section {
-    padding-left: 20px;
-    padding-right: 20px;
+  :root {
+    --ink: #1a1410;
+    --parchment: #f5f0e8;
+    --gold: #b8912a;
+    --gold-light: #d4aa4a;
+    --ash: #5a5450;
+    --rule: #c8b89a;
+    --white: #faf7f2;
+    --sky-blue: #2a5a8c;
   }
-}
 
-/* ── SCROLL ANIMATIONS ────────────────────────────────────────────── */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  .bg-fixed { position: relative; }
+
+  .bg-fixed::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url('sky.png');
+    background-size: cover;
+    background-position: center 30%;
+    opacity: 0.07;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  nav, section, div, footer, header { position: relative; z-index: 1; }
+
+  .section-shepherd {
+    background-image: url('shepherd.png');
+    background-attachment: fixed;
+    background-size: 55%;
+    background-position: right center;
+    background-repeat: no-repeat;
+  }
+
+  .section-schoolhouse {
+    background-image: url('schoolhouse.png');
+    background-attachment: fixed;
+    background-size: 50%;
+    background-position: left center;
+    background-repeat: no-repeat;
+  }
+
+  .section-shepherd::before,
+  .section-schoolhouse::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(245,240,232,0.88);
+    z-index: 0;
+  }
+
+  .section-shepherd > *, .section-schoolhouse > * { position: relative; z-index: 1; }
+
+  nav {
+    position: sticky;
+    top: 0;
+    background: rgba(26,20,16,0.97);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 2rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #2a2018;
+  }
+
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--parchment);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+
+  .nav-brand em { color: var(--gold); font-style: italic; }
+
+  .nav-links { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #908878;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-apply {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: var(--ink) !important;
+    padding: 0.45rem 1.1rem;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .nav-apply:hover { background: var(--gold-light) !important; }
+
+  .hero {
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem;
+    background: linear-gradient(to bottom, rgba(245,240,232,0.0) 0%, rgba(245,240,232,0.75) 70%, rgba(245,240,232,1) 100%);
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 6.5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--ink);
+    animation: fadeUp 0.9s ease 0.1s both;
+  }
+
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero h1 .line2 { color: var(--sky-blue); display: block; }
+
+  .hero-rule { width: 44px; height: 1px; background: var(--gold); margin: 2rem auto; animation: fadeUp 1s ease 0.2s both; }
+
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--ash);
+    max-width: 560px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.85;
+    animation: fadeUp 1s ease 0.3s both;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--parchment);
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+    transition: background 0.2s;
+    animation: fadeUp 1s ease 0.4s both;
+  }
+
+  .hero-cta:hover { background: var(--gold); color: var(--ink); }
+
+  .scripture-band {
+    background: var(--ink);
+    color: var(--parchment);
+    text-align: center;
+    padding: 3.5rem 2rem;
+  }
+
+  .scripture-band blockquote {
+    font-size: clamp(1rem, 2.5vw, 1.45rem);
+    font-style: italic;
+    font-weight: 300;
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.75;
+  }
+
+  .scripture-band cite {
+    display: block;
+    margin-top: 1.25rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-style: normal;
+    color: var(--gold);
+  }
+
+  .section {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); max-width: 160px; }
+
+  .section-title {
+    font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+    font-weight: 300;
+    line-height: 1.25;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-title em { color: var(--gold); font-style: italic; }
+
+  .body-text { color: var(--ash); font-size: 1.05rem; line-height: 1.9; font-weight: 300; max-width: 660px; }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .pillar {
+    padding: 2rem 1.5rem;
+    border: 1px solid var(--rule);
+    background: rgba(250,247,242,0.92);
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .pillar:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .pillar-icon { font-size: 1.4rem; color: var(--gold); display: block; margin-bottom: 1rem; }
+  .pillar h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .pillar p { font-size: 0.9rem; color: var(--ash); font-weight: 300; line-height: 1.75; }
+
+  /* PATHWAY CARDS */
+  .pathway {
+    border: 1px solid var(--rule);
+    background: rgba(250,247,242,0.95);
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .pathway-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--rule);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .pathway-provider {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+
+  .pathway-header h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: 0.2rem; }
+
+  .pathway-meta-row {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .pathway-meta {
+    text-align: right;
+  }
+
+  .pathway-meta strong {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ash);
+    margin-bottom: 0.15rem;
+  }
+
+  .pathway-meta span {
+    font-size: 0.9rem;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  .pathway-body { padding: 1.5rem 2rem; }
+
+  .pathway-desc {
+    font-size: 0.95rem;
+    color: var(--ash);
+    font-weight: 300;
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+    max-width: 620px;
+  }
+
+  .certs-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
+
+  .cert-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--parchment);
+    padding: 0.28rem 0.7rem;
+  }
+
+  .jobs-row { border-top: 1px solid var(--rule); padding-top: 1rem; margin-top: 0.25rem; }
+
+  .jobs-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .jobs-list { display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; }
+  .jobs-list span { font-size: 0.88rem; color: var(--ash); font-style: italic; }
+
+  .pathway-link {
+    display: inline-block;
+    margin-top: 1.25rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .pathway-link:hover { color: var(--ink); border-color: var(--ink); }
+
+  /* COHORT MODEL */
+  .cohort-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .cohort-step {
+    padding: 1.5rem;
+    border: 1px solid var(--rule);
+    background: rgba(250,247,242,0.92);
+  }
+
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .cohort-step h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+  .cohort-step p { font-size: 0.85rem; color: var(--ash); font-weight: 300; line-height: 1.7; }
+
+  /* CONTACT */
+  .contact-section { background: var(--ink); padding: 5rem 2rem; }
+  .contact-inner { max-width: 640px; margin: 0 auto; }
+  .contact-inner .section-label { color: var(--gold); }
+  .contact-inner .section-label::after { background: #2a2018; }
+  .contact-inner .section-title { color: var(--parchment); }
+
+  .contact-intro {
+    color: #908878;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.85;
+    margin-bottom: 2.5rem;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .form-group { display: flex; flex-direction: column; margin-bottom: 1rem; }
+
+  .form-group label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #908878;
+    margin-bottom: 0.4rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: #241c14;
+    border: 1px solid #3a3028;
+    color: var(--parchment);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 300;
+    padding: 0.75rem 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--gold); }
+
+  .form-group select option { background: #241c14; }
+  .form-group textarea { resize: vertical; min-height: 110px; }
+
+  .form-submit {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    padding: 1rem 2.5rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 0.5rem;
+    border-radius: 0;
+    width: 100%;
+  }
+
+  .form-submit:hover { background: var(--gold-light); }
+
+  .form-notice {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    color: #605850;
+    margin-top: 1rem;
+    line-height: 1.7;
+    text-align: center;
+  }
+
+  /* FOOTER */
+  footer { background: #0e0c0a; color: #6b6460; text-align: center; padding: 3rem 2rem; }
+
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    color: var(--parchment);
+    margin-bottom: 0.35rem;
+  }
+
+  .footer-name em { color: var(--gold); font-style: italic; }
+
+  .footer-mono {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+
+  footer p { font-size: 0.8rem; line-height: 1.9; }
+  footer a { color: var(--gold-light); text-decoration: none; }
+  footer a:hover { color: var(--parchment); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-up { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 680px) {
+    .form-row { grid-template-columns: 1fr; }
+    .pillars { grid-template-columns: 1fr 1fr; }
+    .pathway-header { flex-direction: column; }
+    .pathway-meta { text-align: left; }
+    .cohort-steps { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 440px) {
+    .pillars { grid-template-columns: 1fr; }
+    .cohort-steps { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
-<body>
+<body class="bg-fixed">
 
-<!-- ══════════════════════════════════════════════════════════════════
-     GATEWAY PAGE
-══════════════════════════════════════════════════════════════════ -->
-<div id="gateway" class="page active">
-  <div class="gateway-inner">
-    <div class="gateway-rule"></div>
-    <p class="gateway-org">The Thessalonian Mandate Institute · Austin, Texas</p>
+<nav>
+  <a href="#" class="nav-brand">The <em>Thessalonian</em> Mandate Institute</a>
+  <div class="nav-links">
+    <a href="#mission">Mission</a>
+    <a href="#support">Support</a>
+    <a href="#pathways">Pathways</a>
+    <a href="#model">How It Works</a>
+    <a href="#apply">Apply</a>
+    <a href="#apply" class="nav-apply">Apply Free</a>
+  </div>
+</nav>
 
-    <h1 class="gateway-title">
-      The one who is willing<br>to work shall be
-      <em>equipped to work.</em>
-    </h1>
+<header class="hero">
+  <div class="hero-eyebrow">Faith &nbsp;&#183;&nbsp; Work &nbsp;&#183;&nbsp; Community &nbsp;&#183;&nbsp; Austin, Texas</div>
+  <h1>
+    You were made to <em>work.</em>
+    <span class="line2">We will equip you.</span>
+  </h1>
+  <div class="hero-rule"></div>
+  <p>&#8220;The one who is willing to work shall be equipped to work.&#8221; Free workforce retraining for the technologically displaced, wrapped in faith and community.</p>
+  <a href="#apply" class="hero-cta">Begin Your Journey</a>
+</header>
 
-    <p class="gateway-subtitle">
-      A Faith-Based Organization restoring displaced workers<br>
-      to the dignity of productive, purposeful labor.
-    </p>
+<div class="scripture-band">
+  <blockquote>
+    &#8220;If anyone is not willing to work, let him not eat.&#8221; &nbsp;&#8212;&nbsp; &#8220;Make it your ambition to lead a quiet life, to work with your hands, so that you will not be dependent on anybody.&#8221;
+  </blockquote>
+  <cite>2 Thessalonians 3:10 &nbsp;&#183;&nbsp; 1 Thessalonians 4:11</cite>
+</div>
 
-    <p class="gateway-question">Who are you?</p>
+<!-- MISSION -->
+<div class="section section-shepherd fade-up" id="mission">
+  <div class="section-label">The Founding</div>
+  <h2 class="section-title">The <em>Mandate</em></h2>
+  <p class="body-text">
+    For eleven years, Rickey Jay Bennett II preached the dignity of labor on the streets of America. Not from a pulpit. Without credentials or institutional backing &#8212; only a Bible and a conviction that work is sacred. That the capacity for productive, dignified labor is not a feature of economic life but a feature of human nature, given by a Creator who worked in the beginning.
+  </p>
+  <p class="body-text" style="margin-top:1.25rem;">
+    She preached this from the exact position of someone the economy had left behind. For twenty-three years she navigated homelessness, instability, and a labor market that strips a willing worker of every foothold. She understood from the inside what it means to be willing, to be able, to be trying &#8212; and still to be without.
+  </p>
+  <p class="body-text" style="margin-top:1.25rem;">
+    The Thessalonian Mandate Institute is what she built when she stopped waiting for someone else to build it. It was founded on the conviction that the work mandate of scripture is not a comfort. It is a command &#8212; and a command carries with it a corresponding obligation. When technology displaces a worker from their vocation, the community of faith is obligated to equip.
+  </p>
+  <p class="body-text" style="margin-top:1.25rem;">
+    The mandate stands. Now we build.
+  </p>
+</div>
 
-    <div class="gateway-doors">
-      <div class="door" onclick="showPage('worker')">
-        <span class="door-label">For those who need us</span>
-        <div class="door-title">I want to work.<br>I need help getting there.</div>
-        <p class="door-desc">Technology displaced you. The economy failed you. You are willing. You deserve to be equipped.</p>
-        <span class="door-arrow">Enter →</span>
+<!-- SUPPORT PILLARS -->
+<div class="section fade-up" id="support">
+  <div class="section-label">How We Walk With You</div>
+  <h2 class="section-title">We Are Not a School. We Are a <em>Community.</em></h2>
+  <p class="body-text">
+    TMI does not deliver curriculum &#8212; it delivers people to curriculum that already exists, wraps that journey in community and theological purpose, and provides the case management, accountability, and job placement support that free platforms cannot. Our job does not end until you have a job.
+  </p>
+  <div class="pillars">
+    <div class="pillar">
+      <span class="pillar-icon">&#10022;</span>
+      <h3>Faith Support</h3>
+      <p>Displacement is not only an economic crisis. It is a spiritual one. Prayer, scripture, and a community that understands the theological weight of being removed from your vocation.</p>
+    </div>
+    <div class="pillar">
+      <span class="pillar-icon">&#9670;</span>
+      <h3>Study Support</h3>
+      <p>Accountability partners, weekly cohort check-ins, and navigation support through every platform. You do not figure out the coursework alone. That is what the cohort is for.</p>
+    </div>
+    <div class="pillar">
+      <span class="pillar-icon">&#9671;</span>
+      <h3>Emotional Support</h3>
+      <p>Long-term displacement leaves marks. We do not rush past them. We sit with you in it and move forward together when you are ready.</p>
+    </div>
+    <div class="pillar">
+      <span class="pillar-icon">&#9633;</span>
+      <h3>Job Placement</h3>
+      <p>Resume building, LinkedIn profile creation, mock interviews, and direct connections to the Institute&#8217;s employer network. Graduation is not the finish line. Employment is.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PATHWAYS -->
+<div class="section section-schoolhouse fade-up" id="pathways">
+  <div class="section-label">Free Learning Pathways</div>
+  <h2 class="section-title">Certifications That <em>Open Doors</em></h2>
+  <p class="body-text">
+    Every pathway below costs participants nothing. Every credential is industry-recognized and employer-verifiable. We help you choose the right path, stay on track, and complete it.
+  </p>
+
+  <div class="pathway" style="margin-top:3rem;">
+    <div class="pathway-header">
+      <div>
+        <div class="pathway-provider">Google &nbsp;&#183;&nbsp; IBM</div>
+        <h3>IT Support &amp; Helpdesk</h3>
       </div>
-
-      <div class="door" onclick="showPage('donor')">
-        <span class="door-label">For those who can help</span>
-        <div class="door-title">I believe the willing deserve to be equipped.</div>
-        <p class="door-desc">You are a donor, grantor, or partner who understands that this obligation is real and must be fulfilled.</p>
-        <span class="door-arrow">Enter →</span>
+      <div class="pathway-meta-row">
+        <div class="pathway-meta"><strong>Duration</strong><span>8&#8211;12 weeks</span></div>
+        <div class="pathway-meta"><strong>Starting Salary</strong><span>$35,000&#8211;$55,000</span></div>
+        <div class="pathway-meta"><strong>Cost</strong><span>Free</span></div>
       </div>
     </div>
+    <div class="pathway-body">
+      <p class="pathway-desc">The fastest entry point into technology employment. Help desk and IT support roles exist at every organization of every size. No prior experience required.</p>
+      <div class="certs-list">
+        <span class="cert-tag">Google IT Support Certificate</span>
+        <span class="cert-tag">IBM IT Support Badge</span>
+        <span class="cert-tag">CompTIA A+ Preparation</span>
+      </div>
+      <div class="jobs-row">
+        <div class="jobs-label">Jobs This Opens</div>
+        <div class="jobs-list">
+          <span>Help Desk Technician</span>
+          <span>IT Support Specialist</span>
+          <span>Desktop Support Analyst</span>
+          <span>Systems Technician</span>
+        </div>
+      </div>
+      <a href="https://grow.google/certificates" target="_blank" rel="noopener" class="pathway-link">Google Career Certificates &#8599;</a>
+    </div>
+  </div>
 
-    <p class="gateway-verse">
-      "For even when we were with you, we gave you this rule:<br>
-      The one who is unwilling to work shall not eat." — 2 Thessalonians 3:10
+  <div class="pathway">
+    <div class="pathway-header">
+      <div>
+        <div class="pathway-provider">Google &nbsp;&#183;&nbsp; IBM</div>
+        <h3>Cybersecurity Fundamentals</h3>
+      </div>
+      <div class="pathway-meta-row">
+        <div class="pathway-meta"><strong>Duration</strong><span>10&#8211;14 weeks</span></div>
+        <div class="pathway-meta"><strong>Starting Salary</strong><span>$50,000&#8211;$70,000</span></div>
+        <div class="pathway-meta"><strong>Cost</strong><span>Free</span></div>
+      </div>
+    </div>
+    <div class="pathway-body">
+      <p class="pathway-desc">One of the highest-demand fields in technology with a severe talent shortage. No prior IT experience required for the Google certificate pathway.</p>
+      <div class="certs-list">
+        <span class="cert-tag">Google Cybersecurity Certificate</span>
+        <span class="cert-tag">IBM Cybersecurity Fundamentals Badge</span>
+      </div>
+      <div class="jobs-row">
+        <div class="jobs-label">Jobs This Opens</div>
+        <div class="jobs-list">
+          <span>Security Operations Analyst</span>
+          <span>Cybersecurity Technician</span>
+          <span>Incident Response Analyst</span>
+          <span>Security Compliance Associate</span>
+        </div>
+      </div>
+      <a href="https://grow.google/certificates" target="_blank" rel="noopener" class="pathway-link">Google Career Certificates &#8599;</a>
+    </div>
+  </div>
+
+  <div class="pathway">
+    <div class="pathway-header">
+      <div>
+        <div class="pathway-provider">Microsoft Learn</div>
+        <h3>Cloud Computing Basics</h3>
+      </div>
+      <div class="pathway-meta-row">
+        <div class="pathway-meta"><strong>Duration</strong><span>8&#8211;10 weeks</span></div>
+        <div class="pathway-meta"><strong>Cost</strong><span>Free*</span></div>
+      </div>
+    </div>
+    <div class="pathway-body">
+      <p class="pathway-desc">Cloud skills are required across virtually every technology role. Azure Fundamentals is the most accessible entry point and opens doors across Microsoft&#8217;s entire ecosystem. *AZ-900 exam voucher (~$165) &#8212; the Institute pursues Microsoft for Nonprofits voucher coverage for all participants.</p>
+      <div class="certs-list">
+        <span class="cert-tag">Microsoft Azure Fundamentals AZ-900</span>
+        <span class="cert-tag">IBM Cloud Essentials Badge</span>
+      </div>
+      <div class="jobs-row">
+        <div class="jobs-label">Jobs This Opens</div>
+        <div class="jobs-list">
+          <span>Azure Cloud Associate</span>
+          <span>Cloud Operations Technician</span>
+          <span>Systems Administrator</span>
+        </div>
+      </div>
+      <a href="https://learn.microsoft.com" target="_blank" rel="noopener" class="pathway-link">Microsoft Learn &#8599;</a>
+    </div>
+  </div>
+
+  <div class="pathway">
+    <div class="pathway-header">
+      <div>
+        <div class="pathway-provider">Google &nbsp;&#183;&nbsp; IBM</div>
+        <h3>Data Analytics</h3>
+      </div>
+      <div class="pathway-meta-row">
+        <div class="pathway-meta"><strong>Duration</strong><span>12&#8211;16 weeks</span></div>
+        <div class="pathway-meta"><strong>Starting Salary</strong><span>$45,000&#8211;$65,000</span></div>
+        <div class="pathway-meta"><strong>Cost</strong><span>Free</span></div>
+      </div>
+    </div>
+    <div class="pathway-body">
+      <p class="pathway-desc">Data skills are the most broadly applicable technical competency in the modern economy. Entry-level roles exist across every industry sector.</p>
+      <div class="certs-list">
+        <span class="cert-tag">Google Data Analytics Professional Certificate</span>
+        <span class="cert-tag">IBM Data Analyst Badge</span>
+      </div>
+      <div class="jobs-row">
+        <div class="jobs-label">Jobs This Opens</div>
+        <div class="jobs-list">
+          <span>Junior Data Analyst</span>
+          <span>Business Intelligence Analyst</span>
+          <span>Data Operations Technician</span>
+          <span>Reporting Analyst</span>
+        </div>
+      </div>
+      <a href="https://grow.google/certificates" target="_blank" rel="noopener" class="pathway-link">Google Career Certificates &#8599;</a>
+    </div>
+  </div>
+
+  <div class="pathway">
+    <div class="pathway-header">
+      <div>
+        <div class="pathway-provider">IBM &nbsp;&#183;&nbsp; Anthropic</div>
+        <h3>AI Tools &amp; Workflow Automation</h3>
+      </div>
+      <div class="pathway-meta-row">
+        <div class="pathway-meta"><strong>Duration</strong><span>4&#8211;6 weeks</span></div>
+        <div class="pathway-meta"><strong>Cost</strong><span>Free</span></div>
+      </div>
+    </div>
+    <div class="pathway-body">
+      <p class="pathway-desc">The most immediately practical pathway for workers displaced by AI specifically. Teaches participants to work with AI tools rather than be replaced by them. Applicable across every industry and role type.</p>
+      <div class="certs-list">
+        <span class="cert-tag">IBM AI Fundamentals Badge</span>
+        <span class="cert-tag">Anthropic AI Fluency Certificate</span>
+      </div>
+      <div class="jobs-row">
+        <div class="jobs-label">Jobs This Opens</div>
+        <div class="jobs-list">
+          <span>AI Operations Associate</span>
+          <span>Prompt Engineering Specialist</span>
+          <span>Workflow Automation Coordinator</span>
+          <span>Digital Operations Technician</span>
+        </div>
+      </div>
+      <a href="https://skillsbuild.org" target="_blank" rel="noopener" class="pathway-link">IBM SkillsBuild &#8599;</a>
+    </div>
+  </div>
+
+  <div class="pathway">
+    <div class="pathway-header">
+      <div>
+        <div class="pathway-provider">GCFGlobal &nbsp;&#183;&nbsp; Microsoft Learn</div>
+        <h3>Microsoft Office &amp; Administrative Technology</h3>
+      </div>
+      <div class="pathway-meta-row">
+        <div class="pathway-meta"><strong>Duration</strong><span>4&#8211;8 weeks</span></div>
+        <div class="pathway-meta"><strong>Cost</strong><span>Free</span></div>
+      </div>
+    </div>
+    <div class="pathway-body">
+      <p class="pathway-desc">The foundational pathway for participants moving into administrative, clerical, and office support roles. Broad applicability across every employment sector.</p>
+      <div class="certs-list">
+        <span class="cert-tag">Microsoft Office Specialist Certification</span>
+        <span class="cert-tag">GCFGlobal Completion Certificate</span>
+      </div>
+      <div class="jobs-row">
+        <div class="jobs-label">Jobs This Opens</div>
+        <div class="jobs-list">
+          <span>Administrative Assistant</span>
+          <span>Office Coordinator</span>
+          <span>Receptionist</span>
+          <span>Data Entry Specialist</span>
+        </div>
+      </div>
+      <a href="https://gcfglobal.org" target="_blank" rel="noopener" class="pathway-link">GCFGlobal &#8599;</a>
+    </div>
+  </div>
+
+  <div class="pathway">
+    <div class="pathway-header">
+      <div>
+        <div class="pathway-provider">GCFGlobal &nbsp;&#183;&nbsp; Khan Academy</div>
+        <h3>Digital Literacy Foundations</h3>
+      </div>
+      <div class="pathway-meta-row">
+        <div class="pathway-meta"><strong>Duration</strong><span>2&#8211;4 weeks</span></div>
+        <div class="pathway-meta"><strong>Cost</strong><span>Free</span></div>
+      </div>
+    </div>
+    <div class="pathway-body">
+      <p class="pathway-desc">No participant is turned away for lack of baseline skills. This pathway is for anyone who needs foundational computer, internet, and device proficiency before entering a technical track. It is the prerequisite for every other pathway &#8212; and it is where we meet you if that is where you are.</p>
+      <div class="certs-list">
+        <span class="cert-tag">GCFGlobal Completion Certificate</span>
+        <span class="cert-tag">Khan Academy Skill Badges</span>
+      </div>
+      <a href="https://gcfglobal.org" target="_blank" rel="noopener" class="pathway-link">GCFGlobal &#8599;</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section fade-up" id="model">
+  <div class="section-label">The Cohort Model</div>
+  <h2 class="section-title">You Will Not Do This <em>Alone</em></h2>
+  <p class="body-text">Human beings were not created to learn alone. All pathways are delivered in cohorts of 8&#8211;15 participants. Community accountability is one of the most powerful drivers of completion in adult workforce training. This is a theological conviction, not a logistical preference.</p>
+  <div class="cohort-steps">
+    <div class="cohort-step">
+      <div class="step-num">Week 0</div>
+      <h4>Intake &amp; Assessment</h4>
+      <p>Pathway selection, digital literacy baseline, and device access coordination for participants without equipment.</p>
+    </div>
+    <div class="cohort-step">
+      <div class="step-num">Week 1</div>
+      <h4>Cohort Orientation</h4>
+      <p>All participants complete IBM Workplace Readiness together, building cohort identity and earning a digital credential immediately.</p>
+    </div>
+    <div class="cohort-step">
+      <div class="step-num">Weeks 2&#8211;12</div>
+      <h4>Primary Pathway</h4>
+      <p>Individual pathway training with weekly cohort check-ins, peer support, and Institute navigation assistance.</p>
+    </div>
+    <div class="cohort-step">
+      <div class="step-num">Final 2 Weeks</div>
+      <h4>Portfolio &amp; Placement</h4>
+      <p>Resume building, LinkedIn profile, mock interviews, and direct employer network introductions. Graduation and credential presentation.</p>
+    </div>
+    <div class="cohort-step">
+      <div class="step-num">Post-Graduation</div>
+      <h4>Alumni Network</h4>
+      <p>Graduates mentor incoming cohorts, fulfilling the theological obligation of the equipped to equip others.</p>
+    </div>
+  </div>
+</div>
+
+<!-- APPLY -->
+<div class="contact-section" id="apply">
+  <div class="contact-inner">
+    <div class="section-label">Join Us</div>
+    <h2 class="section-title">Apply <em>Free</em></h2>
+    <p class="contact-intro">
+      Tell us where you are. We will meet you there. There is no cost, no obligation, and no judgment &#8212; just community and a path forward.
+    </p>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fname">First Name</label>
+        <input type="text" id="fname" placeholder="First">
+      </div>
+      <div class="form-group">
+        <label for="lname">Last Name</label>
+        <input type="text" id="lname" placeholder="Last">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="you@example.com">
+    </div>
+    <div class="form-group">
+      <label for="situation">Your Situation</label>
+      <select id="situation">
+        <option value="">Select one...</option>
+        <option>Recently displaced from work</option>
+        <option>Long-term unemployed</option>
+        <option>Looking to change careers</option>
+        <option>Underemployed, seeking advancement</option>
+        <option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="pathway">Pathway of Interest</label>
+      <select id="pathway">
+        <option value="">Select one...</option>
+        <option>IT Support and Helpdesk</option>
+        <option>Cybersecurity Fundamentals</option>
+        <option>Cloud Computing Basics</option>
+        <option>Data Analytics</option>
+        <option>AI Tools and Workflow Automation</option>
+        <option>Microsoft Office and Administrative Technology</option>
+        <option>Digital Literacy Foundations</option>
+        <option>Not sure yet &#8212; I need guidance</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="support">What Do You Need Most?</label>
+      <select id="support">
+        <option value="">Select one...</option>
+        <option>Help choosing and completing a certification</option>
+        <option>Study support and accountability</option>
+        <option>Resume and interview help</option>
+        <option>Emotional and faith support</option>
+        <option>All of the above</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="message">Anything Else You Want Us to Know</label>
+      <textarea id="message" placeholder="Optional &#8212; share as much or as little as you like."></textarea>
+    </div>
+    <button class="form-submit" onclick="submitApplication()">Submit Application</button>
+    <p class="form-notice">
+      Clicking submit opens Gmail pre-addressed to our applications inbox.<br>
+      You will need a Gmail account &#8212; you will need one anyway for Google Career Certificates.<br>
+      Your application goes directly to applications@thessalonian-mandate-institute.org
     </p>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════════
-     WORKER SIDE
-══════════════════════════════════════════════════════════════════ -->
-<div id="worker" class="page">
+<footer>
+  <div class="footer-name">The <em>Thessalonian</em> Mandate Institute</div>
+  <div class="footer-mono">Austin, Texas &nbsp;&#183;&nbsp; Est. 2026 &nbsp;&#183;&nbsp; EIN 42-2419586 &nbsp;&#183;&nbsp; 26 U.S.C. &#167; 508(c)(1)(A)</div>
+  <p>
+    Founded by Minister Rickey Jay Bennett II.<br>
+    Rooted in 2 Thessalonians 3:10 and 1 Thessalonians 4:11.<br><br>
+    <a href="mailto:applications@thessalonian-mandate-institute.org">applications@thessalonian-mandate-institute.org</a>
+    &nbsp;&#183;&nbsp;
+    <a href="mailto:shepherd_jade@thessalonian-mandate-institute.org">shepherd_jade@thessalonian-mandate-institute.org</a>
+  </p>
+</footer>
 
-  <nav class="site-nav">
-    <div class="nav-brand" onclick="showPage('gateway')">
-      TMI <span>·</span> Thessalonian Mandate
-    </div>
-    <ul class="nav-links">
-      <li><a onclick=\"gotoSection('worker-program')\">Programs</a></li>
-      <li><a onclick=\"gotoSection('worker-placement')\">Job Placement</a></li>
-      <li><a onclick=\"gotoSection('worker-apply')\">Apply Now</a></li>
-    </ul>
-    <button class="nav-switch" onclick="showPage('donor')">For Donors →</button>
-  </nav>
-
-  <!-- Hero -->
-  <section class="worker-hero">
-    <div class="worker-hero-inner">
-      <p class="hero-eyebrow">The Thessalonian Mandate Institute</p>
-      <h1>Your troubles<br>end <em>here.</em></h1>
-      <p class="worker-hero-body">
-        You did not lose your job because you stopped caring or stopped trying.
-        Technology moved, the economy shifted, and the ground disappeared beneath
-        you through no fault of your own. You are willing to work.
-        That willingness is sacred — and it obligates us to equip you.
-      </p>
-      <div class="btn-group">
-        <a class="btn-primary" onclick="gotoSection('worker-apply')">Start Your Application</a>
-        <a class="btn-outline" onclick="gotoSection('worker-program')">See Our Programs</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Reassurance -->
-  <section class="reassurance">
-    <div class="reassurance-inner">
-      <div class="reassurance-text reveal">
-        <h2>We see you.<br>We are <em>here</em> for you.</h2>
-        <p>
-          The Thessalonian Mandate Institute was founded by someone who lived exactly
-          where you are standing. Twenty-three years of homelessness, instability,
-          and a labor market that stripped away every foothold as fast as it could
-          be found.
-        </p>
-        <p>
-          This organization was not built in a boardroom. It was built by someone
-          who understands from the inside what it means to be willing, to be able,
-          to be trying — and still to be without.
-        </p>
-        <p>
-          The mandate of scripture is plain: those who are willing to work must be
-          equipped to work. That is not a suggestion. It is an obligation. And we
-          intend to fulfill it — for you, right now, at no cost to you.
-        </p>
-      </div>
-      <div class="reassurance-pillars reveal">
-        <div class="pillar">
-          <div class="pillar-title">Free Training</div>
-          <div class="pillar-text">Every program, every pathway, every certification — zero cost to you. We have built the infrastructure so you do not have to pay for it.</div>
-        </div>
-        <div class="pillar">
-          <div class="pillar-title">Real Community</div>
-          <div class="pillar-text">You will not do this alone. Every participant moves through their pathway in a cohort — a group of people with the same goal, holding each other accountable.</div>
-        </div>
-        <div class="pillar">
-          <div class="pillar-title">Direct Placement</div>
-          <div class="pillar-text">We do not hand you a certificate and wish you luck. We connect you to employers, advocate for you, and do not consider our obligation fulfilled until you are working.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- How it works -->
-  <section class="how-it-works" id="worker-program">
-    <div class="section-inner">
-      <p class="section-label reveal">How It Works</p>
-      <h2 class="section-title reveal">Simple. Free. Supported.</h2>
-      <div class="steps">
-        <div class="step reveal">
-          <div class="step-num">01</div>
-          <div class="step-title">You Apply</div>
-          <p class="step-text">Fill out a short application. Tell us where you are, what you have done, and what you want to do next. There is no wrong answer. We will work with wherever you are starting from.</p>
-        </div>
-        <div class="step reveal">
-          <div class="step-num">02</div>
-          <div class="step-title">We Assess and Place</div>
-          <p class="step-text">We sit with you to understand your background, your aptitude, and your goals. Together we choose the pathway that gives you the best shot at stable, dignified employment.</p>
-        </div>
-        <div class="step reveal">
-          <div class="step-num">03</div>
-          <div class="step-title">You Train. We Support.</div>
-          <p class="step-text">Your training happens through industry-leading free platforms — Google, IBM, Microsoft, Khan Academy. We provide cohort community, weekly check-ins, and navigation support the whole way through.</p>
-        </div>
-        <div class="step reveal">
-          <div class="step-num">04</div>
-          <div class="step-title">You Credential</div>
-          <p class="step-text">You earn industry-recognized credentials from Google, IBM, and Microsoft — the same certifications employers are actively searching for. They are yours to keep and carry wherever you go.</p>
-        </div>
-        <div class="step reveal">
-          <div class="step-num">05</div>
-          <div class="step-title">We Place You</div>
-          <p class="step-text">We connect you directly to employer networks, workforce boards, and job fairs. We write letters of recommendation. We advocate for you. We do not stop until you are working.</p>
-        </div>
-        <div class="step reveal">
-          <div class="step-num">06</div>
-          <div class="step-title">You Give Back</div>
-          <p class="step-text">When you are stable, you mentor the next cohort. The mandate does not end with you. The equipped equip others. That is how the community grows.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Pathways -->
-  <section class="pathways-section">
-    <div class="section-inner">
-      <p class="section-label reveal">What We Offer</p>
-      <h2 class="section-title reveal">Sixteen Pathways. All Free.</h2>
-      <div class="pathway-grid">
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">💻</div>
-          <div class="pathway-name">IT Support</div>
-          <div class="pathway-duration">8–12 Weeks</div>
-          <div class="pathway-desc">The fastest entry point into technology. Help desk and IT support roles exist at every organization.</div>
-          <div class="pathway-free">Free · Google Certificate</div>
-        </div>
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">🔒</div>
-          <div class="pathway-name">Cybersecurity</div>
-          <div class="pathway-duration">10–14 Weeks</div>
-          <div class="pathway-desc">One of the highest-demand fields in technology. No prior experience required.</div>
-          <div class="pathway-free">Free · Google + IBM</div>
-        </div>
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">☁️</div>
-          <div class="pathway-name">Cloud Computing</div>
-          <div class="pathway-duration">8–10 Weeks</div>
-          <div class="pathway-desc">Microsoft Azure fundamentals — required knowledge across virtually every technology role.</div>
-          <div class="pathway-free">Free · Microsoft Certificate</div>
-        </div>
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">📊</div>
-          <div class="pathway-name">Data Analytics</div>
-          <div class="pathway-duration">12–16 Weeks</div>
-          <div class="pathway-desc">The most broadly applicable technical skill in the modern economy. Every industry needs it.</div>
-          <div class="pathway-free">Free · Google Certificate</div>
-        </div>
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">🤖</div>
-          <div class="pathway-name">AI Tools</div>
-          <div class="pathway-duration">4–6 Weeks</div>
-          <div class="pathway-desc">Work with AI rather than be replaced by it. The most immediately practical pathway available.</div>
-          <div class="pathway-free">Free · IBM Badge</div>
-        </div>
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">📋</div>
-          <div class="pathway-name">Project Management</div>
-          <div class="pathway-duration">10–12 Weeks</div>
-          <div class="pathway-desc">Organizational and coordination skills that translate across every industry and role type.</div>
-          <div class="pathway-free">Free · Google Certificate</div>
-        </div>
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">🖥️</div>
-          <div class="pathway-name">Microsoft Office</div>
-          <div class="pathway-duration">4–8 Weeks</div>
-          <div class="pathway-desc">Word, Excel, Outlook, PowerPoint. The foundation of administrative and office professional roles.</div>
-          <div class="pathway-free">Free · Microsoft Specialist</div>
-        </div>
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">📱</div>
-          <div class="pathway-name">Digital Marketing</div>
-          <div class="pathway-duration">10–12 Weeks</div>
-          <div class="pathway-desc">Social media, SEO, analytics, and campaign management. High demand across every business sector.</div>
-          <div class="pathway-free">Free · Google Certificate</div>
-        </div>
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">🌐</div>
-          <div class="pathway-name">Digital Literacy</div>
-          <div class="pathway-duration">2–4 Weeks</div>
-          <div class="pathway-desc">Starting from zero? This is where you begin. Computer basics, internet, email, smartphone.</div>
-          <div class="pathway-free">Free · No Prerequisites</div>
-        </div>
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">💰</div>
-          <div class="pathway-name">Financial Literacy</div>
-          <div class="pathway-duration">4–6 Weeks</div>
-          <div class="pathway-desc">Budgeting, banking, credit, taxes, and benefits navigation. Multiplies the value of everything else.</div>
-          <div class="pathway-free">Free · Khan Academy</div>
-        </div>
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">🏪</div>
-          <div class="pathway-name">Small Business Basics</div>
-          <div class="pathway-duration">6–8 Weeks</div>
-          <div class="pathway-desc">For those whose best path is self-employment. Business structure, bookkeeping, and customers.</div>
-          <div class="pathway-free">Free · Khan + Coursera</div>
-        </div>
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">🤝</div>
-          <div class="pathway-name">Customer Service</div>
-          <div class="pathway-duration">3–4 Weeks</div>
-          <div class="pathway-desc">High-demand skills across retail, hospitality, healthcare, and service industries.</div>
-          <div class="pathway-free">Free · IBM Badge</div>
-        </div>
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">📁</div>
-          <div class="pathway-name">Administrative Professional</div>
-          <div class="pathway-duration">6–8 Weeks</div>
-          <div class="pathway-desc">Reception, administrative assistant, data entry, and office coordinator roles.</div>
-          <div class="pathway-free">Free · MS + GCFGlobal</div>
-        </div>
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">⭐</div>
-          <div class="pathway-name">Workplace Readiness</div>
-          <div class="pathway-duration">2–4 Weeks</div>
-          <div class="pathway-desc">Every participant starts here together. Professional conduct, communication, and interview preparation.</div>
-          <div class="pathway-free">Free · IBM Badge</div>
-        </div>
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">✍️</div>
-          <div class="pathway-name">English & Communication</div>
-          <div class="pathway-duration">Ongoing</div>
-          <div class="pathway-desc">Reading, writing, and professional communication. Available standalone or alongside any pathway.</div>
-          <div class="pathway-free">Free · Khan Academy</div>
-        </div>
-        <div class="pathway-card reveal">
-          <div class="pathway-icon">📈</div>
-          <div class="pathway-name">More Coming</div>
-          <div class="pathway-duration">Expanding</div>
-          <div class="pathway-desc">We are continuously adding pathways based on what our community needs. Your voice shapes what comes next.</div>
-          <div class="pathway-free">Tell Us What You Need</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Job Placement -->
-  <section class="placement-section" id="worker-placement">
-    <div class="placement-inner">
-      <p class="section-label reveal">Job Placement</p>
-      <h2 class="section-title reveal">We do not stop until you are working.</h2>
-
-      <div class="placement-promise reveal">
-        <p class="placement-promise-text">
-          "We consider our obligation to you fulfilled when you are employed —
-          not when you graduate. The certificate is the beginning, not the end."
-        </p>
-        <p class="placement-promise-attr">— The Thessalonian Mandate Institute</p>
-      </div>
-
-      <div class="placement-grid reveal">
-        <div class="placement-item">
-          <div class="placement-item-title">Resume and Profile</div>
-          <p class="placement-item-text">We build your resume and LinkedIn profile together, specifically highlighting your new credentials in the language employers are searching for.</p>
-        </div>
-        <div class="placement-item">
-          <div class="placement-item-title">Mock Interviews</div>
-          <p class="placement-item-text">You practice with us before you practice with them. We prepare you for the questions, the format, and the confidence the interview requires.</p>
-        </div>
-        <div class="placement-item">
-          <div class="placement-item-title">Employer Connections</div>
-          <p class="placement-item-text">We connect you directly to our employer network, to Workforce Solutions Capital Area, and to IBM and Google's employer partnerships — companies actively seeking credentialed graduates.</p>
-        </div>
-        <div class="placement-item">
-          <div class="placement-item-title">Active Advocacy</div>
-          <p class="placement-item-text">We write letters of recommendation. We make calls. We attend job fairs with you. We are not a platform — we are your advocate, and we stay in the fight until you have an offer.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Apply CTA -->
-  <section class="apply-section" id="worker-apply">
-    <h2>Your next chapter starts today.</h2>
-    <p>The application is free. The training is free. The placement support is free. The only thing we ask is that you show up willing to work — because you already are.</p>
-    <a class="btn-dark" href="mailto:apply@thessalonianmandate.org">Apply Now — It's Free</a>
-  </section>
-
-  <footer class="site-footer">
-    <div class="footer-org">The Thessalonian Mandate Institute</div>
-    <div class="footer-sub">Austin, Texas · 26 U.S.C. § 508(c)(1)(A)</div>
-    <div class="footer-rule"></div>
-    <div class="footer-motto">"The one who is willing to work shall be equipped to work."</div>
-    <div class="footer-legal">
-      Faith-Based Organization · Established under 26 U.S.C. § 508(c)(1)(A)<br>
-      apply@thessalonianmandate.org · Austin, Texas
-    </div>
-  </footer>
-
-</div>
-
-<!-- ══════════════════════════════════════════════════════════════════
-     DONOR / GRANTOR SIDE
-══════════════════════════════════════════════════════════════════ -->
-<div id="donor" class="page">
-
-  <nav class="site-nav">
-    <div class="nav-brand" onclick="showPage('gateway')">
-      TMI <span>·</span> Thessalonian Mandate
-    </div>
-    <ul class="nav-links">
-      <li><a onclick=\"gotoSection('donor-case')\">The Case</a></li>
-      <li><a onclick=\"gotoSection('donor-model')\">Our Model</a></li>
-      <li><a onclick=\"gotoSection('donor-founder')\">Our Founder</a></li>
-      <li><a onclick=\"gotoSection('donor-give')\">Give</a></li>
-    </ul>
-    <button class="nav-switch" onclick="showPage('worker')">For Workers →</button>
-  </nav>
-
-  <!-- Donor Hero -->
-  <section class="donor-hero">
-    <div class="donor-hero-inner">
-      <div class="animate-fade">
-        <p class="hero-eyebrow">The Thessalonian Mandate Institute</p>
-        <h1>The obligation<br>is <em>real.</em><br>So is the crisis.</h1>
-        <p class="donor-hero-body">
-          Technological displacement is not an economic inconvenience. It is a
-          spiritual crisis — a forcible removal of human beings from the vocation
-          God assigned them at creation. The community of faith has a corresponding
-          obligation to respond. We are that response.
-        </p>
-        <div class="btn-group">
-          <a class="btn-primary" onclick="gotoSection('donor-give')">Support the Mission</a>
-          <a class="btn-outline-dark" onclick="gotoSection('donor-case')">Read the Case</a>
-        </div>
-      </div>
-      <div class="donor-stat-box">
-        <div class="stat-number">0</div>
-        <div class="stat-label">Cost to participants.<br>Every pathway. Every credential.<br>Every placement service.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- The Case -->
-  <section class="case-section" id="donor-case">
-    <div class="case-inner">
-      <p class="section-label reveal">The Theological Foundation</p>
-      <h2 class="section-title reveal">Why this organization exists.</h2>
-
-      <div class="scripture-block reveal">
-        <p class="scripture-text">"For even when we were with you, we gave you this rule: The one who is unwilling to work shall not eat."</p>
-        <p class="scripture-ref">2 Thessalonians 3:10 (NIV)</p>
-      </div>
-
-      <p class="case-body reveal">
-        This verse is not a suggestion. The Greek word Paul uses — παραγγέλλω — is a
-        military term for a binding command. Those who are able and willing to work
-        are obligated to work. This has been the position of the Christian tradition
-        from Paul through Luther through Calvin to the present day.
-      </p>
-
-      <p class="case-body reveal">
-        But the mandate has a second edge that the tradition has sometimes overlooked.
-        If those who are willing to work must work, then the community of faith has a
-        corresponding obligation: to ensure that those who are willing have the capacity
-        to do so. When technology displaces a worker from their vocation, the Church
-        does not get to offer thoughts and prayers. The Church is obligated to equip.
-      </p>
-
-      <div class="scripture-block reveal">
-        <p class="scripture-text">"Do you see someone skilled in their work? They will serve before kings; they will not serve before officials of low rank."</p>
-        <p class="scripture-ref">Proverbs 22:29 (NIV)</p>
-      </div>
-
-      <p class="case-body reveal">
-        This is the standard we hold ourselves to. We do not train people to barely
-        qualify for entry-level positions. We train people to stand before kings —
-        to carry credentials that employers actively seek, skills that genuinely
-        transfer, and confidence that comes from genuine mastery.
-      </p>
-
-      <p class="case-body reveal">
-        The Thessalonian Mandate Institute is not a charitable service with religious
-        language applied to it. It is a ministry — an organization that understands
-        workforce retraining as an act of obedience to divine command — and it operates
-        with the theological rigor that obligation demands.
-      </p>
-    </div>
-  </section>
-
-  <!-- Model -->
-  <section class="model-section" id="donor-model">
-    <div class="section-inner">
-      <p class="section-label reveal">Our Model</p>
-      <h2 class="section-title reveal">Lean by design. Powerful by partnership.</h2>
-      <p class="case-body reveal">
-        The Institute does not build curriculum. It builds pipelines. By partnering
-        with IBM, Google, Microsoft, and Khan Academy — platforms that have already
-        invested billions in free workforce training infrastructure — we deliver
-        world-class instruction at zero cost to participants and minimal cost to
-        the organization. Our role is to recruit, assess, support, and place.
-        That is where human ministry happens. That is where your investment goes.
-      </p>
-      <div class="model-grid">
-        <div class="model-card reveal">
-          <div class="model-card-num">01</div>
-          <div class="model-card-title">Recruit and Assess</div>
-          <p class="model-card-text">We find displaced workers through community partnerships, workforce boards, and faith networks. We assess their baseline and match them to the pathway with the highest probability of successful employment.</p>
-        </div>
-        <div class="model-card reveal">
-          <div class="model-card-num">02</div>
-          <div class="model-card-title">Train and Support</div>
-          <p class="model-card-text">Participants train through free platforms — Google, IBM, Microsoft, Khan Academy — in cohorts of 8–15. Weekly check-ins, peer accountability, and navigation support ensure completion rates that free platforms alone cannot achieve.</p>
-        </div>
-        <div class="model-card reveal">
-          <div class="model-card-num">03</div>
-          <div class="model-card-title">Credential and Place</div>
-          <p class="model-card-text">Graduates earn industry-recognized credentials from IBM, Google, and Microsoft. We connect them directly to employer networks, workforce boards, and job fairs — and we advocate for them until they are employed.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Founder -->
-  <section class="founder-section" id="donor-founder">
-    <div class="founder-inner">
-      <p class="section-label reveal" style="color:var(--gold)">Our Founder</p>
-      <h2 class="section-title reveal">Built by someone who lived the problem.</h2>
-
-      <p class="founder-text reveal">
-        The Thessalonian Mandate Institute was not founded in a boardroom. It was
-        founded by someone who spent twenty-three years navigating homelessness,
-        instability, and a labor market that stripped away every foothold as fast
-        as it could be found. Eleven of those years were spent as an itinerant
-        street preacher — proclaiming the dignity of labor across the United States
-        from the exact position of someone the economy had left behind.
-      </p>
-
-      <p class="founder-text reveal">
-        The Institute exists because its founder eventually understood that the work
-        mandate of scripture is not a comfort. It is a command — and commands create
-        obligations. The obligation to equip the willing was not being fulfilled.
-        She built the organization that should have existed when she needed it.
-      </p>
-
-      <p class="founder-text reveal">
-        This is a ministry grounded in scripture, tested by experience, and built
-        with the rigor that both demand. The founding documents — Theological
-        Framework, Statement of Faith, and Bylaws — are available to any grantor
-        upon request and reflect the full depth of the doctrinal convictions that
-        drive this work.
-      </p>
-
-      <div class="founder-credential reveal">
-        <div class="founder-name">Rickey Jay Bennett II</div>
-        <div class="founder-title-text">Founder · Minister · Chief Executive<br>The Thessalonian Mandate Institute</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Give -->
-  <section class="give-section" id="donor-give">
-    <div class="give-inner">
-      <p class="section-label reveal">Support the Mission</p>
-      <h2 class="section-title reveal">Your investment fulfills the mandate.</h2>
-      <p class="case-body reveal">
-        Every dollar given to the Thessalonian Mandate Institute goes directly to
-        the work of equipping displaced workers — case management, cohort support,
-        job placement advocacy, and program operations. No participant ever pays
-        for training. Your giving makes that possible.
-      </p>
-
-      <div class="give-options">
-        <div class="give-card reveal">
-          <div class="give-amount">$50</div>
-          <span class="give-period">Monthly</span>
-          <p class="give-impact">Covers cohort support materials and weekly check-in resources for one participant through their pathway.</p>
-        </div>
-        <div class="give-card reveal">
-          <div class="give-amount">$150</div>
-          <span class="give-period">Monthly</span>
-          <p class="give-impact">Funds full case management support for one participant from intake through job placement.</p>
-        </div>
-        <div class="give-card reveal">
-          <div class="give-amount">$500</div>
-          <span class="give-period">Monthly</span>
-          <p class="give-impact">Sponsors an entire cohort member — covering all support services from enrollment through employment.</p>
-        </div>
-      </div>
-
-      <div class="give-contact reveal">
-        <p>For grant inquiries, major gifts, corporate partnerships, or to request our full organizational documentation including Theological Framework, Statement of Faith, and program curriculum:</p>
-        <a href="mailto:grants@thessalonianmandate.org">grants@thessalonianmandate.org</a>
-      </div>
-    </div>
-  </section>
-
-  <footer class="site-footer">
-    <div class="footer-org">The Thessalonian Mandate Institute</div>
-    <div class="footer-sub">Austin, Texas · 26 U.S.C. § 508(c)(1)(A)</div>
-    <div class="footer-rule"></div>
-    <div class="footer-motto">"The one who is willing to work shall be equipped to work."</div>
-    <div class="footer-legal">
-      Faith-Based Organization · Established under 26 U.S.C. § 508(c)(1)(A)<br>
-      grants@thessalonianmandate.org · Austin, Texas
-    </div>
-  </footer>
-
-</div>
-
-<!-- ══════════════════════════════════════════════════════════════════
-     JAVASCRIPT
-══════════════════════════════════════════════════════════════════ -->
 <script>
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  if (id !== 'gateway') initReveal();
-}
+  function submitApplication() {
+    var fname    = document.getElementById('fname').value.trim();
+    var lname    = document.getElementById('lname').value.trim();
+    var email    = document.getElementById('email').value.trim();
+    var situation = document.getElementById('situation').value;
+    var pathway  = document.getElementById('pathway').value;
+    var support  = document.getElementById('support').value;
+    var message  = document.getElementById('message').value.trim();
 
-function gotoSection(id) {
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
+    if (!fname || !lname || !email) {
+      alert('Please fill in your name and email address before submitting.');
+      return;
+    }
 
-function initReveal() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
+    var body =
+      'TMI APPLICATION\n' +
+      '===============\n\n' +
+      'Name: ' + fname + ' ' + lname + '\n' +
+      'Email: ' + email + '\n' +
+      'Situation: ' + (situation || 'Not specified') + '\n' +
+      'Pathway of Interest: ' + (pathway || 'Not specified') + '\n' +
+      'Support Needed: ' + (support || 'Not specified') + '\n\n' +
+      'Additional Information:\n' + (message || 'None provided');
 
-  document.querySelectorAll('.reveal').forEach(el => {
-    el.classList.remove('visible');
-    observer.observe(el);
-  });
-}
+    var subject = 'TMI Application - ' + fname + ' ' + lname;
+    var to = 'applications@thessalonian-mandate-institute.org';
 
-// Stagger reveal delays
-document.querySelectorAll('.steps .step').forEach((el, i) => {
-  el.style.transitionDelay = `${i * 0.1}s`;
-});
-document.querySelectorAll('.pathway-card').forEach((el, i) => {
-  el.style.transitionDelay = `${(i % 4) * 0.08}s`;
-});
+    var gmailUrl =
+      'https://mail.google.com/mail/?view=cm&fs=1' +
+      '&to=' + encodeURIComponent(to) +
+      '&su=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+
+    window.open(gmailUrl, '_blank');
+  }
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(function(el) { observer.observe(el); });
 </script>
+
 </body>
 </html>
