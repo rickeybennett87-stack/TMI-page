@@ -399,6 +399,40 @@
   .cohort-step h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
   .cohort-step p { font-size: 0.85rem; color: var(--ash); font-weight: 300; line-height: 1.7; }
 
+  /* FEEDBACK */
+  .feedback-section { background: #f0ebe0; padding: 5rem 2rem; border-top: 1px solid var(--rule); }
+  .feedback-inner { max-width: 640px; margin: 0 auto; }
+
+  .feedback-rating {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.25rem;
+  }
+
+  .feedback-rating input[type="radio"] { display: none; }
+
+  .feedback-rating label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid var(--rule);
+    padding: 0.45rem 1rem;
+    cursor: pointer;
+    color: var(--ash);
+    background: rgba(250,247,242,0.8);
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .feedback-rating input[type="radio"]:checked + label {
+    border-color: var(--gold);
+    color: var(--ink);
+    background: var(--parchment);
+  }
+
+  .feedback-rating label:hover { border-color: var(--gold-light); color: var(--ink); }
+
   /* CONTACT */
   .contact-section { background: var(--ink); padding: 5rem 2rem; }
   .contact-inner { max-width: 640px; margin: 0 auto; }
@@ -536,6 +570,7 @@
     <a href="#support">Support</a>
     <a href="#pathways">Pathways</a>
     <a href="#model">How It Works</a>
+    <a href="#feedback">Feedback</a>
     <a href="#apply">Apply</a>
     <a href="#apply" class="nav-apply">Apply Free</a>
   </div>
@@ -856,6 +891,72 @@
   </div>
 </div>
 
+<!-- FEEDBACK -->
+<div class="feedback-section fade-up" id="feedback">
+  <div class="feedback-inner">
+    <div class="section-label">For Current Participants</div>
+    <h2 class="section-title">Tell Us How It Is <em>Going</em></h2>
+    <p class="contact-intro" style="color:var(--ash); font-size:1rem; font-weight:300; line-height:1.85; margin-bottom:2.5rem;">
+      Your feedback shapes how we walk with the next cohort. You do not have to be doing well to write to us &#8212; especially then.
+    </p>
+
+    <div class="form-group" style="margin-bottom:1.25rem;">
+      <label for="fb-name" style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ash);margin-bottom:0.4rem;display:block;">Your Name <span style="color:var(--rule);font-size:0.55rem;">(optional)</span></label>
+      <input type="text" id="fb-name" placeholder="First name or leave blank" style="background:var(--white);border:1px solid var(--rule);color:var(--ink);font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;padding:0.75rem 1rem;outline:none;width:100%;border-radius:0;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--rule)'">
+    </div>
+
+    <div class="form-group" style="margin-bottom:1.25rem;">
+      <label for="fb-pathway" style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ash);margin-bottom:0.4rem;display:block;">Which Pathway Are You On?</label>
+      <select id="fb-pathway" style="background:var(--white);border:1px solid var(--rule);color:var(--ink);font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;padding:0.75rem 1rem;outline:none;width:100%;border-radius:0;-webkit-appearance:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--rule)'">
+        <option value="">Select one...</option>
+        <option>IT Support and Helpdesk</option>
+        <option>Cybersecurity Fundamentals</option>
+        <option>Cloud Computing Basics</option>
+        <option>Data Analytics</option>
+        <option>AI Tools and Workflow Automation</option>
+        <option>Microsoft Office and Administrative Technology</option>
+        <option>Digital Literacy Foundations</option>
+        <option>Not on a pathway yet</option>
+      </select>
+    </div>
+
+    <div class="form-group" style="margin-bottom:1.25rem;">
+      <label style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ash);margin-bottom:0.75rem;display:block;">How Is It Going Overall?</label>
+      <div class="feedback-rating">
+        <input type="radio" name="fb-rating" id="r1" value="Struggling">
+        <label for="r1">Struggling</label>
+        <input type="radio" name="fb-rating" id="r2" value="Getting by">
+        <label for="r2">Getting By</label>
+        <input type="radio" name="fb-rating" id="r3" value="Making progress">
+        <label for="r3">Making Progress</label>
+        <input type="radio" name="fb-rating" id="r4" value="Doing well">
+        <label for="r4">Doing Well</label>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:1.25rem;">
+      <label for="fb-working" style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ash);margin-bottom:0.4rem;display:block;">What Is Working for You?</label>
+      <textarea id="fb-working" placeholder="What has helped &#8212; the cohort, the material, the support..." style="background:var(--white);border:1px solid var(--rule);color:var(--ink);font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;padding:0.75rem 1rem;outline:none;width:100%;border-radius:0;resize:vertical;min-height:90px;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--rule)'"></textarea>
+    </div>
+
+    <div class="form-group" style="margin-bottom:1.25rem;">
+      <label for="fb-hard" style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ash);margin-bottom:0.4rem;display:block;">What Is Hard or Missing?</label>
+      <textarea id="fb-hard" placeholder="What could be better &#8212; be as honest as you need to be." style="background:var(--white);border:1px solid var(--rule);color:var(--ink);font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;padding:0.75rem 1rem;outline:none;width:100%;border-radius:0;resize:vertical;min-height:90px;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--rule)'"></textarea>
+    </div>
+
+    <div class="form-group" style="margin-bottom:1.25rem;">
+      <label for="fb-other" style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--ash);margin-bottom:0.4rem;display:block;">Anything Else <span style="color:var(--rule);font-size:0.55rem;">(optional)</span></label>
+      <textarea id="fb-other" placeholder="Anything you want us to know." style="background:var(--white);border:1px solid var(--rule);color:var(--ink);font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:300;padding:0.75rem 1rem;outline:none;width:100%;border-radius:0;resize:vertical;min-height:80px;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--rule)'"></textarea>
+    </div>
+
+    <button class="form-submit" onclick="submitFeedback()" style="background:var(--ink);color:var(--parchment);">Send Feedback</button>
+    <p class="form-notice" style="color:var(--ash);">
+      Clicking send opens Gmail pre-addressed to our feedback inbox.<br>
+      Your words go directly to feedback@thessalonian-mandate-institute.org
+    </p>
+  </div>
+</div>
+
 <!-- APPLY -->
 <div class="contact-section" id="apply">
   <div class="contact-inner">
@@ -966,6 +1067,42 @@
 
     var subject = 'TMI Application - ' + fname + ' ' + lname;
     var to = 'applications@thessalonian-mandate-institute.org';
+
+    var gmailUrl =
+      'https://mail.google.com/mail/?view=cm&fs=1' +
+      '&to=' + encodeURIComponent(to) +
+      '&su=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+
+    window.open(gmailUrl, '_blank');
+  }
+
+  function submitFeedback() {
+    var name    = document.getElementById('fb-name').value.trim();
+    var pathway = document.getElementById('fb-pathway').value;
+    var working = document.getElementById('fb-working').value.trim();
+    var hard    = document.getElementById('fb-hard').value.trim();
+    var other   = document.getElementById('fb-other').value.trim();
+    var ratingEl = document.querySelector('input[name="fb-rating"]:checked');
+    var rating  = ratingEl ? ratingEl.value : 'Not specified';
+
+    if (!pathway && !working && !hard) {
+      alert('Please fill in at least your pathway and one of the feedback fields before sending.');
+      return;
+    }
+
+    var body =
+      'TMI PARTICIPANT FEEDBACK\n' +
+      '========================\n\n' +
+      'Name: ' + (name || 'Anonymous') + '\n' +
+      'Pathway: ' + (pathway || 'Not specified') + '\n' +
+      'Overall: ' + rating + '\n\n' +
+      'What is working:\n' + (working || 'Not provided') + '\n\n' +
+      'What is hard or missing:\n' + (hard || 'Not provided') + '\n\n' +
+      'Other comments:\n' + (other || 'None');
+
+    var subject = 'Participant Feedback' + (name ? ' — ' + name : '') + (pathway ? ' — ' + pathway : '');
+    var to = 'feedback@thessalonian-mandate-institute.org';
 
     var gmailUrl =
       'https://mail.google.com/mail/?view=cm&fs=1' +
