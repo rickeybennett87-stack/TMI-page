@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /sacred/
+
+User-agent: Googlebot
+Disallow: /sacred/
