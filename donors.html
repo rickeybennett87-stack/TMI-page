@@ -91,6 +91,22 @@
   </div>
 </div>
 
+<!-- GIVING PORTAL OPT-IN -->
+<div class="section fade-up" style="background:var(--ink);color:var(--parchment);border:none;padding:3.5rem 2rem;">
+  <div style="max-width:680px;margin:0 auto;text-align:center;">
+    <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;">Giving Portal</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:300;margin-bottom:1rem;line-height:1.25;">
+      Track the <em style="color:var(--gold);font-style:italic;">Impact</em> of Your Gift
+    </h2>
+    <p style="font-size:1rem;font-style:italic;font-weight:300;color:#c8b89a;line-height:1.85;max-width:560px;margin:0 auto 2rem;">
+      Donors who create an account gain access to our private Giving Portal — live participant progress, pathway completions, and program updates. See exactly where your gift goes.
+    </p>
+    <div id="portal-optin-area" style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;align-items:center;">
+      <span style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;color:#908878;">Loading…</span>
+    </div>
+  </div>
+</div>
+
 <!-- TAX & LEGAL -->
 <div class="legal-band fade-up">
   <div class="legal-band-inner">
@@ -135,6 +151,70 @@
     entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.08 });
   document.querySelectorAll('.fade-up').forEach(function(el) { observer.observe(el); });
+</script>
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
+<script src="js/auth0-config.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  const ROLES_CLAIM_D = 'https://thessalonian-mandate-institute.org/roles';
+  const WORKER_D = 'https://tmi-admin-api.rickeybennett87.workers.dev';
+
+  async function initDonorPortalCTA() {
+    if (!window.auth0Client) { setTimeout(initDonorPortalCTA, 200); return; }
+    const area = document.getElementById('portal-optin-area');
+    const isAuth = await window.auth0Client.isAuthenticated();
+
+    if (!isAuth) {
+      area.innerHTML = `
+        <a href="#" onclick="claimDonorPortal();return false;" style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:0.8rem 2rem;text-decoration:none;">
+          Sign Up for Portal Access
+        </a>`;
+      return;
+    }
+
+    const claims = await window.auth0Client.getIdTokenClaims();
+    const roles = (claims && claims[ROLES_CLAIM_D]) || [];
+
+    if (roles.includes('donor')) {
+      area.innerHTML = `
+        <a href="/giving-portal.html" style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:0.8rem 2rem;text-decoration:none;">
+          Go to Giving Portal →
+        </a>`;
+      return;
+    }
+
+    area.innerHTML = `
+      <a href="#" onclick="claimDonorPortal();return false;" style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:0.8rem 2rem;text-decoration:none;">
+        Claim Portal Access
+      </a>
+      <span style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;color:#908878;">You're signed in — one click to unlock</span>`;
+  }
+
+  async function claimDonorPortal() {
+    if (!window.auth0Client) return;
+    const isAuth = await window.auth0Client.isAuthenticated();
+
+    if (!isAuth) {
+      await window.auth0Client.loginWithRedirect({ appState: { grantRole: 'donor' } });
+      return;
+    }
+
+    // Already signed in — assign role directly then redirect
+    try {
+      const token = await window.auth0Client.getTokenSilently();
+      await fetch(WORKER_D + '/api/grant-role', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: 'donor' })
+      });
+      await window.auth0Client.getTokenSilently({ cacheMode: 'off' });
+    } catch(_) {}
+    window.location.href = '/giving-portal.html';
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initDonorPortalCTA, 400);
+  });
 </script>
 
 </body>

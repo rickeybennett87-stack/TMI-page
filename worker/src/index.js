@@ -2,6 +2,9 @@ const AUTH0_DOMAIN = 'dev-h2m4gq7r6orddrd0.us.auth0.com';
 const ROLES_CLAIM = 'https://thessalonian-mandate-institute.org/roles';
 const SUPABASE_URL = 'https://mwrazxkxmznvoijitqys.supabase.co';
 const ALLOWED_ORIGIN = 'https://thessalonian-mandate-institute.org';
+const DONOR_ROLE_ID   = 'rol_aMQqVTb7E3EuX93Y';
+const GRANTOR_ROLE_ID = 'rol_6Sahrc07CiDYQRRz';
+const ASSIGNABLE_ROLES = { donor: DONOR_ROLE_ID, grantor: GRANTOR_ROLE_ID };
 
 export default {
   async fetch(request, env) {
@@ -27,11 +30,18 @@ export default {
     }
 
     const roles = payload[ROLES_CLAIM] || [];
+    const path = new URL(request.url).pathname;
+
+    // Any authenticated user can self-assign donor/grantor or fetch giving stats
+    if (path === '/api/grant-role' && request.method === 'POST') {
+      return handleGrantRole(request, payload, env);
+    }
+    if (path === '/api/giving-stats') return handleGivingStats(env);
+
+    // Everything under /api/admin/* requires the admin role
     if (!roles.includes('admin')) {
       return respond({ error: 'Forbidden — admin role required' }, 403);
     }
-
-    const path = new URL(request.url).pathname;
 
     if (path === '/api/admin/stats')        return handleStats(env);
     if (path === '/api/admin/applications') return handleTable(env, 'applications', 'submitted_at');
@@ -41,6 +51,83 @@ export default {
     return respond({ error: 'Not found' }, 404);
   }
 };
+
+async function handleGrantRole(request, payload, env) {
+  const body = await request.json().catch(() => ({}));
+  const role = body.role;
+
+  if (!ASSIGNABLE_ROLES[role]) {
+    return respond({ error: 'Invalid role' }, 400);
+  }
+
+  const userId = payload.sub;
+  if (!userId) return respond({ error: 'No user ID in token' }, 400);
+
+  const m2mToken = await getM2MToken(env);
+  if (!m2mToken) return respond({ error: 'Auth service unavailable' }, 503);
+
+  const assignResp = await fetch(
+    `https://${AUTH0_DOMAIN}/api/v2/users/${encodeURIComponent(userId)}/roles`,
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${m2mToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ roles: [ASSIGNABLE_ROLES[role]] })
+    }
+  );
+
+  if (!assignResp.ok && assignResp.status !== 204) {
+    const err = await assignResp.text();
+    return respond({ error: 'Role assignment failed', detail: err }, 502);
+  }
+
+  return respond({ ok: true, role });
+}
+
+async function getM2MToken(env) {
+  const resp = await fetch(`https://${AUTH0_DOMAIN}/oauth/token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      client_id: env.AUTH0_M2M_CLIENT_ID,
+      client_secret: env.AUTH0_M2M_CLIENT_SECRET,
+      audience: `https://${AUTH0_DOMAIN}/api/v2/`,
+      grant_type: 'client_credentials'
+    })
+  });
+  if (!resp.ok) return null;
+  const data = await resp.json();
+  return data.access_token || null;
+}
+
+async function handleGivingStats(env) {
+  const headers = {
+    'apikey': env.SUPABASE_SERVICE_KEY,
+    'Authorization': `Bearer ${env.SUPABASE_SERVICE_KEY}`,
+    'Prefer': 'count=exact',
+    'Range-Unit': 'items',
+    'Range': '0-0'
+  };
+
+  const [members, completed, inProgress] = await Promise.all([
+    fetch(`${SUPABASE_URL}/rest/v1/profiles?select=id`, { method: 'HEAD', headers }),
+    fetch(`${SUPABASE_URL}/rest/v1/cert_progress?select=id&status=eq.completed`, { method: 'HEAD', headers }),
+    fetch(`${SUPABASE_URL}/rest/v1/cert_progress?select=id&status=eq.in_progress`, { method: 'HEAD', headers })
+  ]);
+
+  const count = r => {
+    const cr = r.headers.get('content-range');
+    return cr ? (parseInt(cr.split('/')[1]) || 0) : 0;
+  };
+
+  return respond({
+    participants: count(members),
+    pathwaysCompleted: count(completed),
+    pathwaysInProgress: count(inProgress)
+  });
+}
 
 async function verifyJWT(token) {
   const parts = token.split('.');

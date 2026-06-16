@@ -400,6 +400,17 @@
       Clicking send opens Gmail pre-addressed to our grants inbox.<br>
       Your inquiry goes directly to shepherd_jade@thessalonian-mandate-institute.org
     </p>
+
+    <!-- GIVING PORTAL OPT-IN — shown after inquiry is sent -->
+    <div id="grantor-portal-optin" style="display:none;margin-top:2rem;padding:2rem;border:1px solid var(--gold);background:rgba(184,145,42,0.06);">
+      <div style="font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;">Giving Portal Access</div>
+      <p style="font-size:1rem;font-weight:300;color:var(--ash);font-style:italic;margin-bottom:1.25rem;line-height:1.8;">
+        Your inquiry has been sent. Grantors who create an account gain access to our private Giving Portal — live participant progress, pathway completions, and program outcomes for your reporting needs.
+      </p>
+      <div id="grantor-optin-btns" style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
+        <span style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;color:var(--rule);">Loading…</span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -445,12 +456,67 @@
       '&body=' + encodeURIComponent(body);
 
     window.open(gmailUrl, '_blank');
+    showGrantorOptIn();
+  }
+
+  function showGrantorOptIn() {
+    document.getElementById('grantor-portal-optin').style.display = 'block';
+    setTimeout(initGrantorPortalCTA, 400);
   }
 
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.08 });
   document.querySelectorAll('.fade-up').forEach(function(el) { observer.observe(el); });
+</script>
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
+<script src="js/auth0-config.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  var ROLES_CLAIM_G = 'https://thessalonian-mandate-institute.org/roles';
+  var WORKER_G = 'https://tmi-admin-api.rickeybennett87.workers.dev';
+
+  async function initGrantorPortalCTA() {
+    if (!window.auth0Client) { setTimeout(initGrantorPortalCTA, 200); return; }
+    var area = document.getElementById('grantor-optin-btns');
+    var isAuth = await window.auth0Client.isAuthenticated();
+
+    if (!isAuth) {
+      area.innerHTML = '<a href="#" onclick="claimGrantorPortal();return false;" style="font-family:\'DM Mono\',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:0.7rem 1.8rem;text-decoration:none;">Sign Up for Portal Access</a>';
+      return;
+    }
+
+    var claims = await window.auth0Client.getIdTokenClaims();
+    var roles = (claims && claims[ROLES_CLAIM_G]) || [];
+
+    if (roles.includes('grantor')) {
+      area.innerHTML = '<a href="/giving-portal.html" style="font-family:\'DM Mono\',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:0.7rem 1.8rem;text-decoration:none;">Go to Giving Portal →</a>';
+      return;
+    }
+
+    area.innerHTML = '<a href="#" onclick="claimGrantorPortal();return false;" style="font-family:\'DM Mono\',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;background:var(--gold);color:var(--ink);padding:0.7rem 1.8rem;text-decoration:none;">Claim Portal Access</a>';
+  }
+
+  async function claimGrantorPortal() {
+    if (!window.auth0Client) return;
+    var isAuth = await window.auth0Client.isAuthenticated();
+
+    if (!isAuth) {
+      await window.auth0Client.loginWithRedirect({ appState: { grantRole: 'grantor' } });
+      return;
+    }
+
+    try {
+      var token = await window.auth0Client.getTokenSilently();
+      await fetch(WORKER_G + '/api/grant-role', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: 'grantor' })
+      });
+      await window.auth0Client.getTokenSilently({ cacheMode: 'off' });
+    } catch(_) {}
+    window.location.href = '/giving-portal.html';
+  }
 </script>
 
 </body>

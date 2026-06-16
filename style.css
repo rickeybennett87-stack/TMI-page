@@ -125,6 +125,25 @@ nav {
 
 .nav-apply:hover { background: var(--gold-light) !important; }
 
+.nav-user-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: #908878;
+}
+
+.nav-sign-out {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6a5a4a;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-sign-out:hover { color: var(--gold); }
+
 /* PAGE HEADER (donors, grantors, interior pages) */
 .page-header {
   background: var(--ink);

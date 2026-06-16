@@ -11,8 +11,28 @@ async function initAuth() {
   });
 
   if (window.location.search.includes('code=') && window.location.search.includes('state=')) {
-    await auth0Client.handleRedirectCallback();
+    const result = await auth0Client.handleRedirectCallback();
     window.history.replaceState({}, document.title, window.location.pathname);
+
+    const pendingRole = result && result.appState && result.appState.grantRole;
+
+    if (pendingRole === 'donor' || pendingRole === 'grantor') {
+      try {
+        const token = await auth0Client.getTokenSilently();
+        await fetch('https://tmi-admin-api.rickeybennett87.workers.dev/api/grant-role', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ role: pendingRole })
+        });
+        // Force a fresh token so the new role appears in claims
+        await auth0Client.getTokenSilently({ cacheMode: 'off' });
+      } catch (_) { /* role assignment failed silently — they can still land on the portal */ }
+      window.location.href = '/giving-portal.html';
+      return;
+    }
 
     const claims = await auth0Client.getIdTokenClaims();
     const roles = (claims && claims[ROLES_CLAIM]) || [];
