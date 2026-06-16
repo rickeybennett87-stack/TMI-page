@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Console — The Thessalonian Mandate Institute</title>
+<link rel="canonical" href="https://thessalonian-mandate-institute.org/admin.html">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1410;
+    --parchment: #f5f0e8;
+    --gold: #b8912a;
+    --gold-light: #d4aa4a;
+    --ash: #5a5450;
+    --rule: #c8b89a;
+    --white: #faf7f2;
+    --sky-blue: #2a5a8c;
+    --danger: #8c2a2a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    background: rgba(26,20,16,0.97);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 2rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #2a2018;
+    z-index: 100;
+  }
+
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--parchment);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+
+  .nav-brand em { color: var(--gold); font-style: italic; }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    flex-wrap: wrap;
+  }
+
+  .nav-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 0.2rem 0.6rem;
+  }
+
+  .nav-user {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: #908878;
+  }
+
+  .nav-signout {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6a5a4a;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-signout:hover { color: var(--gold); }
+
+  /* MAIN LAYOUT */
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 4rem;
+  }
+
+  .page-header {
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1.2rem;
+  }
+
+  .page-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 2.2rem;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+
+  .page-header h1 em { color: var(--gold); font-style: italic; }
+
+  .page-header p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ash);
+    margin-top: 0.4rem;
+  }
+
+  /* STATS GRID */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--rule);
+    padding: 1.4rem 1.6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--gold);
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ash);
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .stat-value.loading { color: var(--rule); }
+
+  /* TABLE PANEL */
+  .table-panel {
+    background: var(--white);
+    border: 1px solid var(--rule);
+  }
+
+  .tab-bar {
+    display: flex;
+    border-bottom: 1px solid var(--rule);
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ash);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 0.9rem 1.6rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+    margin-bottom: -1px;
+  }
+
+  .tab-btn:hover { color: var(--ink); }
+
+  .tab-btn.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  .tab-content {
+    display: none;
+    padding: 1.6rem;
+  }
+
+  .tab-content.active { display: block; }
+
+  /* DATA TABLE */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  .data-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.57rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ash);
+    text-align: left;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+
+  .data-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(200,184,154,0.35);
+    vertical-align: top;
+    max-width: 280px;
+    word-break: break-word;
+  }
+
+  .data-table tr:last-child td { border-bottom: none; }
+
+  .data-table tr:hover td { background: rgba(200,184,154,0.12); }
+
+  .status-pill {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.57rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.18rem 0.6rem;
+    border-radius: 2px;
+  }
+
+  .status-pill.in-progress { background: rgba(42,90,140,0.12); color: var(--sky-blue); }
+  .status-pill.completed   { background: rgba(184,145,42,0.15); color: var(--gold); }
+  .status-pill.not-started { background: rgba(90,84,80,0.1);   color: var(--ash); }
+
+  /* STATES */
+  .state-loading,
+  .state-empty,
+  .state-error {
+    padding: 3rem 1rem;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ash);
+  }
+
+  .state-error { color: var(--danger); }
+
+  .spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--rule);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-right: 0.6rem;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* GATE SCREEN */
+  #gate-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--parchment);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ash);
+  }
+
+  #gate-screen.visible { display: flex; }
+
+  /* REFRESH BTN */
+  .refresh-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ash);
+    background: none;
+    border: 1px solid var(--rule);
+    padding: 0.35rem 0.9rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    float: right;
+    margin-top: -0.2rem;
+  }
+
+  .refresh-btn:hover { color: var(--gold); border-color: var(--gold); }
+
+  .tab-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .tab-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+</style>
+</head>
+<body>
+
+<div id="gate-screen">
+  <span class="spinner"></span>
+  <span id="gate-msg">Verifying access…</span>
+</div>
+
+<nav>
+  <a href="/" class="nav-brand">The <em>Thessalonian Mandate</em> Institute</a>
+  <div class="nav-right">
+    <span class="nav-badge">Admin Console</span>
+    <span class="nav-user" id="nav-user-name"></span>
+    <a href="#" class="nav-signout" id="nav-signout-btn" onclick="signOut(); return false;">Sign Out</a>
+  </div>
+</nav>
+
+<main>
+  <div class="page-header">
+    <h1>Admin <em>Console</em></h1>
+    <p id="admin-subtitle">Loading…</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Applications</div>
+      <div class="stat-value loading" id="stat-applications">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Members</div>
+      <div class="stat-value loading" id="stat-members">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">In Progress</div>
+      <div class="stat-value loading" id="stat-in-progress">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Completed</div>
+      <div class="stat-value loading" id="stat-completed">—</div>
+    </div>
+  </div>
+
+  <div class="table-panel">
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('applications', this)">Applications</button>
+      <button class="tab-btn" onclick="switchTab('members', this)">Members</button>
+      <button class="tab-btn" onclick="switchTab('progress', this)">Cert Progress</button>
+    </div>
+
+    <div id="tab-applications" class="tab-content active">
+      <div class="tab-header">
+        <span class="tab-title">Applications</span>
+        <button class="refresh-btn" onclick="loadTable('applications')">Refresh</button>
+      </div>
+      <div id="tbl-applications"><div class="state-loading"><span class="spinner"></span>Loading…</div></div>
+    </div>
+
+    <div id="tab-members" class="tab-content">
+      <div class="tab-header">
+        <span class="tab-title">Members</span>
+        <button class="refresh-btn" onclick="loadTable('members')">Refresh</button>
+      </div>
+      <div id="tbl-members"><div class="state-loading"><span class="spinner"></span>Loading…</div></div>
+    </div>
+
+    <div id="tab-progress" class="tab-content">
+      <div class="tab-header">
+        <span class="tab-title">Certification Progress</span>
+        <button class="refresh-btn" onclick="loadTable('progress')">Refresh</button>
+      </div>
+      <div id="tbl-progress"><div class="state-loading"><span class="spinner"></span>Loading…</div></div>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
+<script src="js/auth0-config.js"></script>
+<script>
+  const ROLES_CLAIM = 'https://thessalonian-mandate-institute.org/roles';
+  const WORKER = 'https://tmi-admin-api.rickeybennett87.workers.dev';
+
+  let auth0Client = null;
+  let accessToken = null;
+
+  function showGate(msg) {
+    document.getElementById('gate-msg').textContent = msg;
+    document.getElementById('gate-screen').classList.add('visible');
+  }
+
+  function hideGate() {
+    document.getElementById('gate-screen').classList.remove('visible');
+  }
+
+  async function initAdmin() {
+    showGate('Verifying access…');
+
+    auth0Client = await auth0.createAuth0Client({
+      domain: AUTH0_CONFIG.domain,
+      clientId: AUTH0_CONFIG.clientId,
+      authorizationParams: AUTH0_CONFIG.authorizationParams,
+      cacheLocation: AUTH0_CONFIG.cacheLocation
+    });
+
+    if (window.location.search.includes('code=') && window.location.search.includes('state=')) {
+      await auth0Client.handleRedirectCallback();
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    const isAuthenticated = await auth0Client.isAuthenticated();
+
+    if (!isAuthenticated) {
+      showGate('Redirecting to sign in…');
+      await auth0Client.loginWithRedirect({
+        appState: { returnTo: '/admin.html' }
+      });
+      return;
+    }
+
+    const claims = await auth0Client.getIdTokenClaims();
+    const roles = (claims && claims[ROLES_CLAIM]) || [];
+
+    if (!roles.includes('admin')) {
+      showGate('Access denied — admin role required.');
+      setTimeout(() => { window.location.href = '/'; }, 2000);
+      return;
+    }
+
+    const user = await auth0Client.getUser();
+    document.getElementById('nav-user-name').textContent = user.name || user.email || '';
+    document.getElementById('admin-subtitle').textContent =
+      'Signed in as ' + (user.email || user.name || 'admin');
+
+    try {
+      accessToken = await auth0Client.getTokenSilently();
+    } catch {
+      showGate('Session token error — please sign in again.');
+      setTimeout(() => signOut(), 2000);
+      return;
+    }
+
+    hideGate();
+    loadStats();
+    loadTable('applications');
+  }
+
+  async function apiFetch(endpoint) {
+    const resp = await fetch(`${WORKER}/api/admin/${endpoint}`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!resp.ok) throw new Error(`${resp.status} ${resp.statusText}`);
+    return resp.json();
+  }
+
+  async function loadStats() {
+    try {
+      const s = await apiFetch('stats');
+      const set = (id, val) => {
+        const el = document.getElementById(id);
+        el.textContent = val ?? '0';
+        el.classList.remove('loading');
+      };
+      set('stat-applications', s.applications);
+      set('stat-members', s.members);
+      set('stat-in-progress', s.inProgress);
+      set('stat-completed', s.completed);
+    } catch (e) {
+      ['stat-applications','stat-members','stat-in-progress','stat-completed'].forEach(id => {
+        document.getElementById(id).textContent = 'err';
+      });
+    }
+  }
+
+  async function loadTable(name) {
+    const container = document.getElementById(`tbl-${name}`);
+    container.innerHTML = '<div class="state-loading"><span class="spinner"></span>Loading…</div>';
+    try {
+      const rows = await apiFetch(name);
+      if (!rows || rows.length === 0) {
+        container.innerHTML = '<div class="state-empty">No records found.</div>';
+        return;
+      }
+      container.innerHTML = renderTable(name, rows);
+    } catch (e) {
+      container.innerHTML = `<div class="state-error">Error: ${e.message}</div>`;
+    }
+  }
+
+  function fmt(val) {
+    if (val === null || val === undefined) return '<span style="color:var(--rule)">—</span>';
+    if (typeof val === 'string' && val.match(/^\d{4}-\d{2}-\d{2}T/)) {
+      return new Date(val).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
+    }
+    return String(val);
+  }
+
+  function statusPill(status) {
+    if (!status) return '—';
+    const cls = status.replace('_', '-');
+    return `<span class="status-pill ${cls}">${status.replace('_', ' ')}</span>`;
+  }
+
+  function renderTable(name, rows) {
+    if (name === 'applications') {
+      return `<div style="overflow-x:auto"><table class="data-table">
+        <thead><tr>
+          <th>Submitted</th><th>Name</th><th>Email</th><th>Phone</th>
+          <th>Pathway Interest</th><th>Message</th>
+        </tr></thead>
+        <tbody>${rows.map(r => `<tr>
+          <td>${fmt(r.submitted_at)}</td>
+          <td>${fmt(r.name)}</td>
+          <td>${fmt(r.email)}</td>
+          <td>${fmt(r.phone)}</td>
+          <td>${fmt(r.pathway_interest)}</td>
+          <td style="font-size:0.82em">${fmt(r.message)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+    }
+
+    if (name === 'members') {
+      return `<div style="overflow-x:auto"><table class="data-table">
+        <thead><tr>
+          <th>Joined</th><th>Display Name</th><th>Email</th>
+          <th>Discord</th><th>Auth0 Sub</th>
+        </tr></thead>
+        <tbody>${rows.map(r => `<tr>
+          <td>${fmt(r.created_at)}</td>
+          <td>${fmt(r.display_name)}</td>
+          <td>${fmt(r.email)}</td>
+          <td>${fmt(r.discord_username)}</td>
+          <td style="font-family:'DM Mono',monospace;font-size:0.65em">${fmt(r.auth0_sub)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+    }
+
+    if (name === 'progress') {
+      return `<div style="overflow-x:auto"><table class="data-table">
+        <thead><tr>
+          <th>Auth0 Sub</th><th>Pathway</th><th>Status</th>
+          <th>Started</th><th>Completed</th>
+        </tr></thead>
+        <tbody>${rows.map(r => `<tr>
+          <td style="font-family:'DM Mono',monospace;font-size:0.65em">${fmt(r.auth0_sub)}</td>
+          <td>${fmt(r.pathway_id)}</td>
+          <td>${statusPill(r.status)}</td>
+          <td>${fmt(r.started_at)}</td>
+          <td>${fmt(r.completed_at)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+    }
+
+    return '<div class="state-empty">Unknown table.</div>';
+  }
+
+  function switchTab(name, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(`tab-${name}`).classList.add('active');
+    loadTable(name);
+  }
+
+  async function signOut() {
+    if (!auth0Client) return;
+    await auth0Client.logout({ logoutParams: { returnTo: window.location.origin } });
+  }
+
+  document.addEventListener('DOMContentLoaded', initAdmin);
+</script>
+</body>
+</html>
