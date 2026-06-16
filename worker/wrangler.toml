@@ -1,0 +1,12 @@
+name = "tmi-admin-api"
+main = "src/index.js"
+compatibility_date = "2024-09-23"
+account_id = "9b0bf8e4bfecf1df879be351a0369487"
+workers_dev = true
+
+[observability]
+enabled = true
+
+[[routes]]
+pattern = "thessalonian-mandate-institute.org/api/admin/*"
+zone_id = "7ccf6b115146554b41d3551a9ecc468c"
