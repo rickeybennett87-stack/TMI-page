@@ -521,7 +521,11 @@
     container.innerHTML = '<div class="state-loading"><span class="spinner"></span>Loading…</div>';
     try {
       const rows = await apiFetch(name);
-      if (!rows || rows.length === 0) {
+      if (!Array.isArray(rows)) {
+        container.innerHTML = `<div class="state-error">Error: ${rows?.message || rows?.error || 'Unexpected response from server'}</div>`;
+        return;
+      }
+      if (rows.length === 0) {
         container.innerHTML = '<div class="state-empty">No records found.</div>';
         return;
       }
