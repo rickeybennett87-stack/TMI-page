@@ -520,7 +520,8 @@
     const container = document.getElementById(`tbl-${name}`);
     container.innerHTML = '<div class="state-loading"><span class="spinner"></span>Loading…</div>';
     try {
-      const rows = await apiFetch(name);
+      let rows = await apiFetch(name);
+      if (!Array.isArray(rows)) rows = rows?.data ?? rows;
       if (!Array.isArray(rows)) {
         container.innerHTML = `<div class="state-error">Error: ${rows?.message || rows?.error || 'Unexpected response from server'}</div>`;
         return;
